@@ -35,23 +35,22 @@ return {
     ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
     ["<leader>fh"] = { "<cmd> Telescope oldfiles<cr>", desc = "Find history" },
     ["<leader>fH"] = { "<cmd> Telescope help_tags<cr>", desc = "Find help" },
-    ["<leader>x"] = { function() require("astronvim.utils.buffer").close() end, desc = "Close buffer" },
     ["gi"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
     ["gp"] = { function() vim.diagnostic.open_float() end, desc = "Hover problems" },
     ["g2"] = { function() vim.diagnostic.goto_next() end, desc = "Next problem" },
     ["g1"] = { function() vim.diagnostic.goto_prev() end, desc = "Prev problem" },
-    ["H"] = {
-      function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
-      desc = "Prev buffer",
-    },
-    ["L"] = {
-      function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
-      desc = "Prev buffer",
-    },
     ["<leader>2"] = { function() require("telescope.builtin").lsp_definitions() end, desc = "Definition" },
     ["<leader>3"] = { function() require("telescope.builtin").commands() end, desc = "Commands" },
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
     ["<leader>tt"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" },
+
+    -- buffer
+    ["<leader>x"] = { "<Cmd>BufferClose<CR>", desc = "Close buffer" },
+    ["<leader>X"] = { "<Cmd>BufferRestore<CR>", desc = "Restore buffer" },
+    ["H"] = { "<Cmd>BufferPrevious<CR>", desc = "Prev buffer" },
+    ["L"] = { "<Cmd>BufferNext<CR>", desc = "Next buffer" },
+    ["<leader>b<"] = { "<Cmd>BufferMovePrevious<CR>", desc = "Buffer move prev" },
+    ["<leader>b>"] = { "<Cmd>BufferMoveNext<CR>", desc = "Buffer move next" },
   },
   t = {
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
