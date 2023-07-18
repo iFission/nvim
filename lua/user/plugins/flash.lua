@@ -35,6 +35,12 @@ return {
       desc = "Flash continue",
     },
     {
+      "(",
+      mode = { "n", "x", "o" },
+      function() require("flash").jump { pattern = vim.fn.expand "<cword>" } end,
+      desc = "Flash search word under cursor",
+    },
+    {
       "<c-s>",
       mode = { "c" },
       function() require("flash").toggle() end,
