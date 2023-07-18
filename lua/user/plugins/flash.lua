@@ -1,6 +1,13 @@
 return {
   "folke/flash.nvim",
   event = "VeryLazy",
+  opts = {
+    modes = {
+      char = {
+        config = function(opts) opts.autohide = vim.fn.mode(true):find "no" and vim.v.operator == "y" end,
+      },
+    },
+  },
   ---@type Flash.Config
   keys = {
     {
