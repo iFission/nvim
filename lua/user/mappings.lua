@@ -12,6 +12,11 @@ return {
     ["<leader>gD"] = { "<cmd>Gitsign reset_buffer<cr>", desc = "Reset buffer" },
     ["<leader>ga"] = { "<cmd>Gitsign stage_hunk<cr>", desc = "Stage hunk" },
     ["<leader>gA"] = { "<cmd>Gitsign stage_buffer<cr>", desc = "Stage buffer" },
+    ["<leader>gs"] = { function() require("telescope.builtin").git_status() end, desc = "Git status" },
+    ["<leader>gS"] = false,
+    ["<leader>gt"] = false,
+    ["<leader>gr"] = false,
+    ["<leader>gh"] = false,
 
     -- find
     ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
