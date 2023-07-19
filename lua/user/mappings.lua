@@ -48,5 +48,6 @@ return {
   t = {
     -- terminal
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
+    ["<C-q>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
   },
 }
