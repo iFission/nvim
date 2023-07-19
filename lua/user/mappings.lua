@@ -20,6 +20,7 @@ return {
 
     -- find
     ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
+    ["<leader><leader>"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
     ["<leader>ff"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
     ["<leader>fh"] = { "<cmd> Telescope oldfiles<cr>", desc = "Find history" },
     ["<leader>fH"] = { "<cmd> Telescope help_tags<cr>", desc = "Find help" },

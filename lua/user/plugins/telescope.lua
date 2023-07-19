@@ -20,6 +20,7 @@ return {
         },
         mappings = {
           i = {
+            ["<leader><leader>"] = actions.close,
             ["<S-Down>"] = actions.cycle_history_next,
             ["<S-Up>"] = actions.cycle_history_prev,
             ["<C-j>"] = actions.move_selection_next,
