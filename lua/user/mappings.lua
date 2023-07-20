@@ -49,16 +49,25 @@ return {
     -- move
     ["<S-Up>"] = { "<Cmd>:m .-2<CR>==", desc = "Move line up" },
     ["<S-Down>"] = { "<Cmd>:m .+1<CR>==", desc = "Move line down" },
+
+    -- paste
+    ["<C-v>"] = { "p" },
   },
   i = {
     -- move
     ["<S-Up>"] = { "<Esc>:m .-2<CR>==gi", desc = "Move line up" },
     ["<S-Down>"] = { "<Esc>:m .+1<CR>==gi", desc = "Move line down" },
+
+    -- paste
+    ["<C-v>"] = { "<Esc>pgi" },
   },
   v = {
     -- move
     ["<S-Up>"] = { ":m '<-2<CR>gv=gv", desc = "Move line up" },
     ["<S-Down>"] = { ":m '>+1<CR>gv=gv", desc = "Move line down" },
+
+    -- paste
+    ["<C-v>"] = { "p" },
   },
   t = {
     -- terminal
