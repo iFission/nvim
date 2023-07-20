@@ -45,6 +45,20 @@ return {
     ["L"] = { "<Cmd>BufferNext<CR>", desc = "Next buffer" },
     ["<leader>b<"] = { "<Cmd>BufferMovePrevious<CR>", desc = "Buffer move prev" },
     ["<leader>b>"] = { "<Cmd>BufferMoveNext<CR>", desc = "Buffer move next" },
+
+    -- move
+    ["<S-Up>"] = { "<Cmd>:m .-2<CR>==", desc = "Move line up" },
+    ["<S-Down>"] = { "<Cmd>:m .+1<CR>==", desc = "Move line down" },
+  },
+  i = {
+    -- move
+    ["<S-Up>"] = { "<Esc>:m .-2<CR>==gi", desc = "Move line up" },
+    ["<S-Down>"] = { "<Esc>:m .+1<CR>==gi", desc = "Move line down" },
+  },
+  v = {
+    -- move
+    ["<S-Up>"] = { ":m '<-2<CR>gv=gv", desc = "Move line up" },
+    ["<S-Down>"] = { ":m '>+1<CR>gv=gv", desc = "Move line down" },
   },
   t = {
     -- terminal
