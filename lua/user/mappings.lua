@@ -26,6 +26,7 @@ return {
     ["<leader>ff"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
     ["<leader>fh"] = { "<cmd> Telescope oldfiles<cr>", desc = "Find history" },
     ["<leader>fH"] = { "<cmd> Telescope help_tags<cr>", desc = "Find help" },
+    ["<leader>9"] = { "<cmd> Navbuddy<cr>", desc = "Navigate symbols" },
 
     -- editing/intellisense
     ["gi"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
