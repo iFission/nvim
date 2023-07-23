@@ -20,6 +20,8 @@ return {
 
     -- find
     ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
+    ["<leader>1"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
+    ["<leader>4"] = { "<cmd> Telescope live_grep<cr>", desc = "Find word under cursor" },
     ["<leader><leader>"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
     ["<leader>ff"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
     ["<leader>fh"] = { "<cmd> Telescope oldfiles<cr>", desc = "Find history" },
@@ -68,6 +70,28 @@ return {
 
     -- paste
     ["<C-v>"] = { "p" },
+
+    -- find
+    ["<leader>4"] = {
+      function()
+        function vim.getVisualSelection()
+          vim.cmd 'noau normal! "vy"'
+          local text = vim.fn.getreg "v"
+          vim.fn.setreg("v", {})
+
+          text = string.gsub(text, "\n", "")
+          if #text > 0 then
+            return text
+          else
+            return ""
+          end
+        end
+
+        local text = vim.getVisualSelection()
+        require("telescope.builtin").live_grep { default_text = text }
+      end,
+      desc = "Find word in selection",
+    },
   },
   t = {
     -- terminal
