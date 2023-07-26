@@ -64,7 +64,7 @@ return {
     ["<S-Down>"] = { "<Cmd>:m .+1<CR>==", desc = "Move line down" },
 
     -- paste
-    ["<C-v>"] = { "p" },
+    ["<C-v>"] = { "gP" },
   },
   i = {
     -- move
@@ -72,7 +72,7 @@ return {
     ["<S-Down>"] = { "<Esc>:m .+1<CR>==gi", desc = "Move line down" },
 
     -- paste
-    ["<C-v>"] = { "<Esc>pgi" },
+    ["<C-v>"] = { "<C-r>*" },
   },
   v = {
     -- move
@@ -80,7 +80,7 @@ return {
     ["<S-Down>"] = { ":m '>+1<CR>gv=gv", desc = "Move line down" },
 
     -- paste
-    ["<C-v>"] = { "p" },
+    ["<C-v>"] = { "P" },
 
     -- find
     ["<leader>4"] = {
