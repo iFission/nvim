@@ -75,6 +75,7 @@ return {
     ["<C-v>"] = { "<C-r>*" },
   },
   v = {
+    ["<C-q>"] = { "<cmd>qa!<cr>", desc = "Quit all" },
     -- move
     ["<S-Up>"] = { ":m '<-2<CR>gv=gv", desc = "Move line up" },
     ["<S-Down>"] = { ":m '>+1<CR>gv=gv", desc = "Move line down" },
