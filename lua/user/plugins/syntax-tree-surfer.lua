@@ -45,8 +45,8 @@ return {
       vim.keymap.set("x", "l", "<cmd>STSSelectChildNode<cr>", opts)
 
       -- Swapping Nodes in Visual Mode
-      vim.keymap.set("x", "K", "<cmd>STSSwapNextVisual<cr>", opts)
-      vim.keymap.set("x", "J", "<cmd>STSSwapPrevVisual<cr>", opts)
+      vim.keymap.set("x", "J", "<cmd>STSSwapNextVisual<cr>", opts)
+      vim.keymap.set("x", "K", "<cmd>STSSwapPrevVisual<cr>", opts)
     end,
   },
 }
