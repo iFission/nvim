@@ -23,10 +23,15 @@ return {
     ["<leader>1"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
     ["<leader>4"] = { "<cmd> Telescope live_grep<cr>", desc = "Find word under cursor" },
     ["<leader><leader>"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
-    ["<leader>ff"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
+    ["<leader>ff"] = {
+      function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
+      desc = "Find git files",
+    },
     ["<leader>fh"] = { "<cmd> Telescope oldfiles<cr>", desc = "Find history" },
     ["<leader>fH"] = { "<cmd> Telescope help_tags<cr>", desc = "Find help" },
     ["<leader>9"] = { "<cmd> Navbuddy<cr>", desc = "Navigate symbols" },
+    ["<leader>0"] = { function() require("barbar.api").pick_buffer() end, desc = "Pick buffer", silent = true },
+    [")"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffer", silent = true },
 
     -- editing/intellisense
     ["gi"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
