@@ -2,6 +2,7 @@ return {
   {
     "ziontee113/syntax-tree-surfer",
     event = "BufEnter",
+    enabled = false,
     config = function()
       require("syntax-tree-surfer").setup {}
       -- Syntax Tree Surfer
