@@ -21,6 +21,8 @@ return {
     -- find
     ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
     ["<leader>1"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
+    ["<leader>3"] = { function() require("telescope.builtin").commands() end, desc = "Commands" },
+    ["<leader>#"] = { function() require("telescope.builtin").keymaps() end, desc = "Find keymaps" },
     ["<leader>4"] = { "<cmd> Telescope live_grep<cr>", desc = "Find word under cursor" },
     ["<leader><leader>"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
     ["<leader>ff"] = {
@@ -45,7 +47,6 @@ return {
     ["g2"] = { function() vim.diagnostic.goto_next() end, desc = "Next problem" },
     ["g1"] = { function() vim.diagnostic.goto_prev() end, desc = "Prev problem" },
     ["<leader>2"] = { function() require("telescope.builtin").lsp_definitions() end, desc = "Definition" },
-    ["<leader>3"] = { function() require("telescope.builtin").commands() end, desc = "Commands" },
     ["<leader>'"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
     ["<leader>,"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
     ["<leader>."] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
