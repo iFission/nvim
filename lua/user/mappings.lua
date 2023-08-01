@@ -18,6 +18,9 @@ return {
     ["<leader>gr"] = false,
     ["<leader>gh"] = false,
 
+    -- file
+    ["<leader><C-s>"] = { "<cmd>noa w<cr>", desc = "Save without formatting" },
+
     -- find
     ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
     ["<leader>1"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
