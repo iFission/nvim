@@ -40,11 +40,15 @@ return {
 
     -- editing/intellisense
     ["gi"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
-    ["gp"] = { function() vim.diagnostic.open_float() end, desc = "Hover problems" },
+    ["gl"] = { function() vim.diagnostic.open_float() end, desc = "Hover problems" },
+    ["gc"] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
     ["g2"] = { function() vim.diagnostic.goto_next() end, desc = "Next problem" },
     ["g1"] = { function() vim.diagnostic.goto_prev() end, desc = "Prev problem" },
     ["<leader>2"] = { function() require("telescope.builtin").lsp_definitions() end, desc = "Definition" },
     ["<leader>3"] = { function() require("telescope.builtin").commands() end, desc = "Commands" },
+    ["<leader>'"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
+    ["<leader>,"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
+    ["<leader>."] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
 
     -- terminal
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
