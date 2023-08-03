@@ -2,7 +2,7 @@ return {
   {
     "drybalka/tree-climber.nvim",
     event = "BufEnter",
-    -- enabled = false,
+    enabled = false,
     config = function()
       local keyopts = { noremap = true, silent = true }
       vim.keymap.set({ "n", "v", "o" }, "<S-Left>", require("tree-climber").goto_parent, keyopts)
