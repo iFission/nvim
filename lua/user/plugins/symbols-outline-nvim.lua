@@ -7,7 +7,7 @@ return {
       vim.api.nvim_create_autocmd({ "BufRead" }, {
         command = "SymbolsOutlineOpen",
       })
-      vim.keymap.set({ "n" }, "<leader>E", "<cmd>SymbolsOutline<cr>")
+      vim.keymap.set({ "n" }, "<leader>o", "<cmd>SymbolsOutline<cr>")
     end,
   },
 }
