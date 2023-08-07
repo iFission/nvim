@@ -42,6 +42,10 @@ return {
     },
     ["<leader>0"] = { function() require("barbar.api").pick_buffer() end, desc = "Pick buffer", silent = true },
     [")"] = { function() require("telescope.builtin").buffers() end, desc = "Find buffer", silent = true },
+    ["<leader>fm"] = {
+      function() require("mini.files").open(vim.api.nvim_buf_get_name(0), true) end,
+      desc = "Open mini.files (directory of current file)",
+    },
 
     -- editing/intellisense
     ["gi"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
@@ -53,6 +57,7 @@ return {
     ["<leader>'"] = { function() vim.lsp.buf.hover() end, desc = "Hover symbol details" },
     ["<leader>,"] = { function() vim.diagnostic.open_float() end, desc = "Hover diagnostics" },
     ["<leader>."] = { function() vim.lsp.buf.code_action() end, desc = "LSP code action" },
+    ["<leader>o"] = { "<cmd>SymbolsOutline<cr>", desc = "Open symbols outline" },
 
     -- terminal
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
@@ -73,6 +78,8 @@ return {
 
     -- paste
     ["<C-v>"] = { "gP" },
+
+    ["<cr>"] = { "ciw" },
   },
   i = {
     -- move
