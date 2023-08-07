@@ -71,6 +71,8 @@ return {
     ["L"] = { "<Cmd>BufferNext<CR>", desc = "Next buffer" },
     ["<leader>b<"] = { "<Cmd>BufferMovePrevious<CR>", desc = "Buffer move prev" },
     ["<leader>b>"] = { "<Cmd>BufferMoveNext<CR>", desc = "Buffer move next" },
+    ["<leader>c"] = { "<cmd>enew<cr>", desc = "New File" },
+    ["<leader>C"] = false,
 
     -- move
     ["<S-Up>"] = { "<Cmd>:m .-2<CR>==", desc = "Move line up" },
