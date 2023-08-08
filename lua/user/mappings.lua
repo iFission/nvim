@@ -104,6 +104,7 @@ return {
     ["<C-v>"] = { "P" },
 
     -- find
+    ["<leader>ga"] = { "<cmd>'<,'>Gitsign stage_hunk<cr>", desc = "Stage hunk" },
     ["<leader>4"] = {
       function()
         function vim.getVisualSelection()
