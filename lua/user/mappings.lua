@@ -21,6 +21,7 @@ return {
     ["<leader>gh"] = false,
 
     -- file
+    ["<leader>W"] = { "<cmd>w !sudo tee %<cr>", desc = "Force write" },
     ["<leader><C-s>"] = { "<cmd>noa w<cr>", desc = "Save without formatting" },
 
     -- find
