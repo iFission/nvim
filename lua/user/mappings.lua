@@ -2,6 +2,8 @@ return {
   n = {
     ["<leader>bn"] = { "<cmd>tabnew<cr>", desc = "New tab" },
 
+    ["<leader><c-q>"] = { "<cmd>quitall!<cr>", desc = "Quit all" },
+
     -- git
     ["<leader>g4"] = { "<cmd>Gitsign prev_hunk<cr>", desc = "Prev hunk" },
     ["<leader>g3"] = { "<cmd>Gitsign next_hunk<cr>", desc = "Next hunk" },
