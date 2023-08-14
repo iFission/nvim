@@ -30,7 +30,21 @@ return {
     ["<leader>3"] = { function() require("telescope.builtin").commands() end, desc = "Commands" },
     ["<leader>#"] = { function() require("telescope.builtin").keymaps() end, desc = "Find keymaps" },
     ["<leader>4"] = { "<cmd> Telescope live_grep<cr>", desc = "Find word under cursor" },
-    ["<leader><leader>"] = { "<cmd> Telescope git_files<cr>", desc = "Find git files" },
+    ["<leader><leader>"] = {
+      function()
+        local function is_git_repo()
+          local is_repo = vim.fn.system "git rev-parse --is-inside-work-tree"
+          return vim.v.shell_error == 0
+        end
+
+        if is_git_repo() then
+          require("telescope.builtin").git_files()
+        else
+          require("telescope.builtin").find_files { hidden = true, no_ignore = true }
+        end
+      end,
+      desc = "Find git files",
+    },
     ["<leader>ff"] = {
       function() require("telescope.builtin").find_files { hidden = true, no_ignore = true } end,
       desc = "Find git files",
