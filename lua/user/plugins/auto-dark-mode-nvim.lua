@@ -9,7 +9,11 @@ return {
     end,
     set_light_mode = function()
       vim.api.nvim_set_option("background", "light")
-      vim.cmd "colorscheme bluloco-light"
+      if vim.loop.os_uname().sysname == "Darwin" then
+        vim.cmd "colorscheme bluloco-light"
+      else
+        vim.cmd "colorscheme bluloco-dark"
+      end
     end,
   },
 }
