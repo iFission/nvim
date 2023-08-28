@@ -6,7 +6,7 @@ return {
     { "kkharji/sqlite.lua",           module = "sqlite" },
   },
   config = function()
-    require("neoclip").setup { enable_persistent_history = true, default_register = "+" }
+    require("neoclip").setup { enable_persistent_history = true, default_register = "unnamed,unnamedplus" }
     require("telescope").load_extension "neoclip"
     vim.keymap.set({ "n" }, "<leader>8", "<cmd>Telescope neoclip<cr>")
   end,
