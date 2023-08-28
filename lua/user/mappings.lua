@@ -91,6 +91,22 @@ return {
     ["<leader>c"] = { "<cmd>enew<cr>", desc = "New File" },
     ["<leader>C"] = false,
 
+    -- diff
+    ["<leader>d"] = {
+      function()
+        local ftype = vim.api.nvim_eval "&filetype"
+        vim.cmd "vsplit"
+        vim.cmd "enew"
+        vim.cmd "normal! P"
+        vim.cmd "setlocal buftype=nowrite"
+        vim.cmd("set filetype=" .. ftype)
+        vim.cmd "diffthis"
+        vim.cmd [[execute "normal! \<C-w>h"]]
+        vim.cmd "diffthis"
+      end,
+      desc = "Compare to clipboard",
+    },
+
     -- window
     ["<c-w><up>"] = { "<Cmd>wincmd k<CR>", desc = "Focus up window" },
     ["<c-w><down>"] = { "<Cmd>wincmd j<CR>", desc = "Focus down window" },
@@ -146,6 +162,9 @@ return {
     -- paste
     ["<C-v>"] = { "P" },
 
+    -- editing
+    ["<leader>j"] = { "J", desc = "Join lines" },
+
     -- find
     ["<leader>ga"] = { "<cmd>'<,'>Gitsign stage_hunk<cr>", desc = "Stage hunk" },
     ["<leader>4"] = {
@@ -168,7 +187,34 @@ return {
       end,
       desc = "Find word in selection",
     },
+
+    -- diff
+    ["<leader>d"] = {
+      function()
+        local ftype = vim.api.nvim_eval "&filetype"
+        vim.cmd(string.format(
+          [[
+            execute "normal! \"xy"
+            vsplit
+            enew
+            normal! P
+            setlocal buftype=nowrite
+            set filetype=%s
+            diffthis
+            execute "normal! \<C-w>\<C-w>"
+            enew
+            set filetype=%s
+            normal! "xP
+            diffthis
+          ]],
+          ftype,
+          ftype
+        ))
+      end,
+      desc = "Compare to clipboard",
+    },
   },
+
   t = {
     -- terminal
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
