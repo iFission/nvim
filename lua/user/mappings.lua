@@ -145,6 +145,7 @@ return {
     ["<cr>"] = { "ciw" },
   },
   i = {
+    ["<C-q>"] = { "<cmd>qa!<cr>", desc = "Quit all" },
     -- move
     ["<S-Up>"] = { "<Esc>:m .-2<CR>==gi", desc = "Move line up" },
     ["<S-Down>"] = { "<Esc>:m .+1<CR>==gi", desc = "Move line down" },
