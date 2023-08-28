@@ -134,8 +134,10 @@ return {
     ["<c-w>K"] = { "<Cmd>wincmd -<CR>", desc = "Increase height" },
 
     -- move
-    ["<S-Up>"] = { "<Cmd>:m .-2<CR>==", desc = "Move line up" },
-    ["<S-Down>"] = { "<Cmd>:m .+1<CR>==", desc = "Move line down" },
+    ["<S-Up>"] = { ":MoveLine(-1)<cr>", desc = "Move line up" },
+    ["<S-Down>"] = { ":MoveLine(1)<cr>", desc = "Move line down" },
+    ["<S-Left>"] = { ":MoveHChar(-1)<cr>", desc = "Move char left" },
+    ["<S-Right>"] = { ":MoveHChar(1)<cr>", desc = "Move char right" },
 
     -- paste
     ["<C-v>"] = { "gP" },
@@ -156,8 +158,10 @@ return {
     ["<C-t>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" },
 
     -- move
-    ["<S-Up>"] = { ":m '<-2<CR>gv=gv", desc = "Move line up" },
-    ["<S-Down>"] = { ":m '>+1<CR>gv=gv", desc = "Move line down" },
+    ["<S-Up>"] = { ":MoveBlock(-1)<cr>", desc = "Move line up" },
+    ["<S-Down>"] = { ":MoveBlock(1)<cr>", desc = "Move line down" },
+    ["<S-Left>"] = { ":MoveHBlock(-1)<cr>", desc = "Move block left" },
+    ["<S-Right>"] = { ":MoveHBlock(1)<cr>", desc = "Move block right" },
 
     -- paste
     ["<C-v>"] = { "P" },
