@@ -8,7 +8,7 @@ return {
     {
       "<leader>D",
       function() require("telescope").extensions.diff.diff_current { hidden = true } end,
-      { desc = "Compare file with current" },
+      { desc = "Compare with file" },
     },
   },
 }
