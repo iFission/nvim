@@ -151,7 +151,7 @@ return {
     ["<S-Down>"] = { "<Esc>:m .+1<CR>==gi", desc = "Move line down" },
 
     -- paste
-    ["<C-v>"] = { "<C-r>*" },
+    ["<C-v>"] = { "<C-O>:set noai<CR><C-r>*<C-O>:set ai<CR>" },
   },
   v = {
     ["<C-q>"] = { "<cmd>qa!<cr>", desc = "Quit all" },
