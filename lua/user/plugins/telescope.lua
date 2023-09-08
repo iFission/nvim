@@ -7,6 +7,7 @@ return {
       defaults = {
         prompt_prefix = get_icon("Selected", 1),
         selection_caret = get_icon("Selected", 1),
+        dynamic_preview_title = true,
         path_display = { "truncate" },
         sorting_strategy = "ascending",
         layout_strategy = "flex",
