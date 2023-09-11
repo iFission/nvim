@@ -172,6 +172,10 @@ return {
 
     -- find
     ["<leader>ga"] = { "<cmd>'<,'>Gitsign stage_hunk<cr>", desc = "Stage hunk" },
+    ["<leader>fr"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
+    ["<leader>1"] = { "<cmd> Telescope resume<cr>", desc = "Resume previous search" },
+    ["<leader>3"] = { function() require("telescope.builtin").commands() end, desc = "Commands" },
+    ["<leader>#"] = { function() require("telescope.builtin").keymaps() end, desc = "Find keymaps" },
     ["<leader>4"] = {
       function()
         function vim.getVisualSelection()
