@@ -67,11 +67,6 @@ return {
     opts = {
       setup = {
         vscode_js_debug = function()
-          local function get_js_debug()
-            local install_path = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-            return install_path .. "/js-debug/src/dapDebugServer.js"
-          end
-
           for _, adapter in ipairs({ "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" }) do
             require("dap").adapters[adapter] = {
               type = "server",
@@ -80,7 +75,6 @@ return {
               executable = {
                 command = "node",
                 args = {
-                  get_js_debug(),
                   "${port}",
                 },
               },

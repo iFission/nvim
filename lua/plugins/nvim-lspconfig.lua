@@ -1,12 +1,16 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    init = function()
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      -- disable a keymap
-      keys[#keys + 1] = { "K", false }
-    end,
     opts = {
+      servers = {
+        ["*"] = {
+          keys = {
+            { "K", false }, -- disable hover
+            -- you can add your own too:
+            -- { "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
+          },
+        },
+      },
       inlay_hints = { enabled = true },
       diagnostics = {
         virtual_text = {

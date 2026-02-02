@@ -1,6 +1,6 @@
 return {
   { "goolord/alpha-nvim", enabled = false },
   { "nvimdev/dashboard-nvim", enabled = false },
-  { "echasnovski/mini.surround", enabled = false },
-  { "echasnovski/mini.pairs", enabled = false },
+  { "nvim-mini/mini.surround", enabled = false },
+  { "nvim-mini/mini.pairs", enabled = false },
 }
