@@ -1,55 +1,32 @@
 return {
   "nvim-telescope/telescope.nvim",
+  cmd = "Telescope",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    {
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      version = "^1.0.0",
+    },
+  },
+
   keys = {
-    { "<leader>/", false },
-    { "<leader>gc", false },
-    { "<leader>,", false },
-    { "<leader>/", false },
-    { "<leader>:", false },
-    { "<leader><space>", false },
-    { "<leader>ff", false },
-    { "<leader>fF", false },
-    { "<leader>fr", false },
-    { "<leader>fR", false },
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-    { "<leader>gc", false },
-    { "<leader>gs", false },
-    -- search
-    { '<leader>s"', false },
-    { "<leader>sa", false },
-    { "<leader>sb", false },
-    { "<leader>sc", false },
-    { "<leader>sC", false },
     { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
-    { "<leader>sd", false },
-    { "<leader>sD", false },
     { "<leader>fd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
     { "<leader>fD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-    { "<leader>sg", false },
-    { "<leader>sG", false },
-    { "<leader>sh", false },
-    { "<leader>sH", false },
-    { "<leader>sk", false },
-    { "<leader>sM", false },
-    { "<leader>sm", false },
-    { "<leader>so", false },
-    { "<leader>sR", false },
-    { "<leader>sw", false },
-    { "<leader>sW", false },
-    { "<leader>sw", false },
-    { "<leader>sW", false },
-    { "<leader>uC", LazyVim.pick("colorscheme", { enable_preview = true }), desc = "Colorscheme with preview" },
-    { "<leader>ss", false },
-    { "<leader>sS", false },
+
+    {
+      "<leader>uC",
+      function()
+        require("telescope.builtin").colorscheme({ enable_preview = true })
+      end,
+      desc = "Colorscheme with preview",
+    },
   },
   config = function()
-    local cycle = require("telescope.cycle")(
-      require("telescope.builtin").git_files,
-      function(opts)
-        require("telescope.builtin").find_files(vim.tbl_extend("force", opts or {}, { hidden = true, no_ignore = true }))
-      end,
-      require("telescope").extensions.live_grep_args.live_grep_args
-    )
+    local cycle = require("telescope.cycle")(require("telescope.builtin").git_files, function(opts)
+      require("telescope.builtin").find_files(vim.tbl_extend("force", opts or {}, { hidden = true, no_ignore = true }))
+    end, require("telescope").extensions.live_grep_args.live_grep_args)
     local actions = require("telescope.actions")
     require("telescope").setup({
       defaults = {

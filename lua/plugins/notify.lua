@@ -1,15 +1,7 @@
 return {
   {
     "rcarriga/nvim-notify",
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("lazyvim.util")
-      if not Util.has("noice.nvim") then
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
-    end,
+    lazy = true, -- only load when we decide to
     opts = {
       render = "compact",
       stages = "static",

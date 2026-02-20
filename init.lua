@@ -1,23 +1,10 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-local lspconfig = require("lspconfig")
-local util = require("lspconfig/util")
-lspconfig.ts_ls.setup({
-  root_dir = util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
-  init_options = {
-    preferences = {
-      includeInlayParameterNameHints = "all",
-      includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-      includeInlayFunctionParameterTypeHints = true,
-      includeInlayVariableTypeHints = true,
-      includeInlayPropertyDeclarationTypeHints = true,
-      includeInlayFunctionLikeReturnTypeHints = true,
-      includeInlayEnumMemberValueHints = true,
-      importModuleSpecifierPreference = "non-relative",
-    },
-  },
-})
+require("config.lazy")
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
 
 vim.opt.diffopt:append({
   "internal",

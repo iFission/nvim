@@ -1,33 +1,10 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
-
-local Util = require("lazyvim.util")
-local function map(mode, lhs, rhs, opts)
-  local keys = require("lazy.core.handler").handlers.keys
-  ---@cast keys LazyKeysHandler
-  -- do not create the keymap if a lazy keys handler exists
-  if not keys.active[keys.parse({ lhs, mode = mode }).id] then
-    opts = opts or {}
-    opts.silent = opts.silent ~= false
-    if opts.remap and not vim.g.vscode then
-      opts.remap = nil
-    end
-    vim.keymap.set(mode, lhs, rhs, opts)
+local map = function(mode, lhs, rhs, opts)
+  opts = opts or {}
+  if opts.silent == nil then
+    opts.silent = true
   end
+  vim.keymap.set(mode, lhs, rhs, opts)
 end
-
--- unset
-vim.keymap.del("n", "<leader>ft")
-vim.keymap.del("n", "<leader>fT")
-vim.keymap.del("n", "<leader>xl")
-vim.keymap.del("n", "<leader>xq")
-vim.keymap.del("n", "<leader>qq")
-vim.keymap.del("n", "<leader>wd")
-vim.keymap.del("n", "<leader>-")
-vim.keymap.del("n", "<leader>|")
-vim.keymap.del("n", "<leader>l")
-vim.keymap.del("n", "<leader>L")
 
 -- nvim
 map({ "n", "i", "v" }, "<c-q>", "<cmd>quitall!<cr>", { desc = "Quit", remap = true })
@@ -93,6 +70,9 @@ end, { desc = "Blame" })
 map("n", "<leader>gL", function()
   Snacks.git.blame_line()
 end, { desc = "Blame (full)" })
+map("n", "<leader>gg", function()
+  Snacks.lazygit()
+end, { desc = "Lazygit" })
 
 -- file
 map("n", "<leader>W", "<cmd>w !sudo tee %<cr>", { desc = "Force write" })
@@ -356,6 +336,9 @@ map({ "n", "x", "i" }, "<c-w>h", "<Cmd>BufferLineCyclePrev<CR>", { desc = "Prev 
 map({ "n", "x", "i" }, "<c-w>l", "<Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "<c-w>j", "<Cmd>BufferLineMovePrev<CR>", { desc = "Buffer move prev" })
 map("n", "<c-w>k", "<Cmd>BufferLineMoveNext<CR>", { desc = "Buffer move next" })
+map("n", "<c-w>tx", "<Cmd>tabclose<CR>", { desc = "Tab close" })
+map("n", "<c-w>tx", "<Cmd>tabprevious<CR>", { desc = "Tab previous" })
+map("n", "<c-w>tx", "<Cmd>tabnext<CR>", { desc = "Tab next" })
 map(
   { "n", "x", "i" },
   "<c-w>L",
