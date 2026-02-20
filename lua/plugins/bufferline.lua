@@ -16,7 +16,12 @@ return {
         end
       end
 
-      local diag_icons = { Error = "E:", Warn = "W:" }
+      local diag_icons = {
+        Error = "󰅚 ",
+        Warn = "󰀪 ",
+        Info = "󰋽 ",
+        Hint = "󰌶 ",
+      }
 
       local ok_devicons, devicons = pcall(require, "nvim-web-devicons")
 

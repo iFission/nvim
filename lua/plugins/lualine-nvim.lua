@@ -20,7 +20,12 @@ return {
 
       local icons = {
         git = { added = "+", modified = "~", removed = "-" },
-        diagnostics = { Error = "E ", Warn = "W ", Info = "I ", Hint = "H " },
+        diagnostics = {
+          Error = "󰅚 ",
+          Warn = "󰀪 ",
+          Info = "󰋽 ",
+          Hint = "󰌶 ",
+        },
       }
 
       local function ts_lang()
