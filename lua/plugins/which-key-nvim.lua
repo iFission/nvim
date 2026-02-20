@@ -13,6 +13,7 @@ return {
         { "<leader>d", group = "Debug" },
         { "<leader>D", group = "Diff" },
         { "<leader>f", group = "Find" },
+        { "<leader>fs", group = "Snacks" },
         { "<leader>g", group = "Git" },
         { "<leader>p", group = "Package" },
         { "<leader>t", group = "Trouble/Test" },

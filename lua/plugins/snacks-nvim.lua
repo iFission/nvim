@@ -10,30 +10,10 @@ return {
       enabled = true,
       char = "▏",
       animate = { enabled = false },
-      hl = {
-        "SnacksIndent1",
-        "SnacksIndent2",
-        "SnacksIndent3",
-        "SnacksIndent4",
-        "SnacksIndent5",
-        "SnacksIndent6",
-        "SnacksIndent7",
-        "SnacksIndent8",
-      },
       scope = {
         char = "▏",
         underline = true,
         -- only_current = true,
-        hl = {
-          "SnacksIndent1",
-          "SnacksIndent2",
-          "SnacksIndent3",
-          "SnacksIndent4",
-          "SnacksIndent5",
-          "SnacksIndent6",
-          "SnacksIndent7",
-          "SnacksIndent8",
-        },
       },
     },
     notifier = {
@@ -43,6 +23,44 @@ return {
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
+    picker = {
+      enabled = true,
+      formatters = {
+        file = {
+          truncate = "center", -- "left" | "center" | "right"
+        },
+      },
+      layout = {
+        layout = {
+          box = "horizontal",
+          width = 0.8,
+          min_width = 120,
+          height = 0.8,
+          {
+            box = "vertical",
+            border = true,
+            title = "{title} {live} {flags}",
+            { win = "input", height = 1, border = "bottom" },
+            { win = "list", border = "none" },
+          },
+          { win = "preview", title = "{preview}", border = true, width = 0.65 },
+        },
+      },
+      win = {
+        input = {
+          keys = {
+            ["<esc>"] = { "close", mode = { "n", "i" } },
+            ["<Tab>"] = { "toggle_live", mode = { "i", "n" } },
+          },
+        },
+        list = {
+          keys = {
+            ["<esc>"] = "close",
+            ["<Tab>"] = "toggle_live",
+          },
+        },
+      },
+    },
     scroll = { enabled = false },
     styles = {
       notification = {

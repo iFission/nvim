@@ -105,17 +105,14 @@ map("v", "<leader>4", function()
   local text = vim.getVisualSelection()
   require("telescope").extensions.live_grep_args.live_grep_args({ default_text = text })
 end, { desc = "Find word in selection" })
+map("n", "<leader>fsr", function()
+  Snacks.picker.resume()
+end, { desc = "Snacks resume" })
+map("n", "<leader>fp", function()
+  Snacks.picker()
+end, { desc = "Snacks picker" })
 map("n", "<leader><leader>", function()
-  local function is_git_repo()
-    local is_repo = vim.fn.system("git rev-parse --is-inside-work-tree")
-    return vim.v.shell_error == 0
-  end
-
-  if is_git_repo() then
-    require("telescope.builtin").git_files({ show_untracked = true })
-  else
-    require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
-  end
+  Snacks.picker.smart({ hidden = true, ignored = false })
 end, { desc = "Find git files" })
 map("v", "<leader><leader>", function()
   function vim.getVisualSelection()
