@@ -36,5 +36,6 @@ return {
     })
     require("telescope").load_extension("neoclip")
     vim.keymap.set({ "n", "x" }, "<leader>8", "<cmd>Telescope neoclip<cr>")
+    vim.keymap.set({ "i", "x" }, "<c-w>8", "<cmd>Telescope neoclip<cr>")
   end,
 }
