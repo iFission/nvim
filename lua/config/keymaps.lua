@@ -73,8 +73,11 @@ map("n", "<leader>gL", function()
   Snacks.git.blame_line()
 end, { desc = "Blame (full)" })
 map("n", "<leader>gg", function()
-  Snacks.lazygit()
+  Snacks.terminal.toggle({ "lazygit" })
 end, { desc = "Lazygit" })
+map("n", "<leader>gl", function()
+  Snacks.terminal.toggle({ "gitui" })
+end, { desc = "Gitui" })
 
 -- file
 map("n", "<leader>W", "<cmd>w !sudo tee %<cr>", { desc = "Force write" })
