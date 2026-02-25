@@ -3,6 +3,7 @@ return {
     "lewis6991/gitsigns.nvim",
     init = function()
       require("gitsigns").setup({
+        attach_to_untracked = true,
         signs = {
           add = { show_count = true },
           change = { show_count = true },
