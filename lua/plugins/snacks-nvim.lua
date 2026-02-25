@@ -25,9 +25,41 @@ return {
     words = { enabled = true },
     picker = {
       enabled = true,
-      formatters = {
-        file = {
-          truncate = "center", -- "left" | "center" | "right"
+      formatters = { file = { truncate = "center" } },
+      actions = {
+        diffview_commit = function(picker, item)
+          local sha = item and (item.commit or item.hash or item.sha or item.value)
+          if type(sha) ~= "string" then
+            sha = item and item.text or ""
+          end
+          sha = sha:match("%x%x%x%x%x%x%x+")
+          if not sha then
+            return
+          end
+
+          picker:close()
+          vim.schedule(function()
+            -- show changes introduced by that commit
+            vim.cmd(("DiffviewOpen %s^..%s"):format(sha, sha))
+          end)
+        end,
+      },
+
+      -- and add this
+      sources = {
+        git_log = {
+          win = {
+            input = {
+              keys = {
+                ["<CR>"] = { "diffview_commit", mode = { "i", "n" } },
+              },
+            },
+            list = {
+              keys = {
+                ["<CR>"] = "diffview_commit",
+              },
+            },
+          },
         },
       },
       layout = {
