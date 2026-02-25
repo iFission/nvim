@@ -6,10 +6,6 @@ return {
     config = true,
     -- stylua: ignore
     keys = {
-      { "<leader>xt", false },
-      { "<leader>xT", false },
-      { "<leader>st", false },
-      { "<leader>sT", false },
       { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
       { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
       { "<leader>tt", "<cmd>TodoTrouble<cr>",                              desc = "Todo (Trouble)" },
