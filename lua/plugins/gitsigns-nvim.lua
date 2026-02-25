@@ -1,22 +1,24 @@
 return {
   {
     "lewis6991/gitsigns.nvim",
-    opts = {
-      signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
-      },
-      signs_staged = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
-      },
-    },
+    init = function()
+      require("gitsigns").setup({
+        signs = {
+          add = { show_count = true },
+          change = { show_count = true },
+          delete = { show_count = true },
+          topdelete = { show_count = true },
+          changedelete = { show_count = true },
+          untracked = { show_count = true },
+        },
+        signs_staged = {
+          add = { show_count = true },
+          change = { show_count = true },
+          delete = { show_count = true },
+          topdelete = { show_count = true },
+          changedelete = { show_count = true },
+        },
+      })
+    end,
   },
 }
