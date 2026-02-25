@@ -1,4 +1,5 @@
 return {
-  "nvim-mini/mini.ai",
-  event = "InsertEnter",
+  "echasnovski/mini.ai",
+  event = "BufEnter",
+  opts = {},
 }
