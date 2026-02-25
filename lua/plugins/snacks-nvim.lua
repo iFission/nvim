@@ -43,23 +43,34 @@ return {
             vim.cmd(("DiffviewOpen %s^..%s"):format(sha, sha))
           end)
         end,
-      },
 
+        diffview_branch = function(picker, item)
+          local function current_branch()
+            local out = vim.fn.systemlist({ "git", "branch", "--show-current" })
+            return (out and out[1] ~= "" and out[1]) or "HEAD"
+          end
+
+          local branch = item and (item.branch or item.name or item.text)
+          if not branch then
+            return
+          end
+          branch = branch:gsub("^%*%s*", ""):gsub("^%s+", "")
+
+          local base = current_branch()
+          picker:close()
+          vim.schedule(function()
+            vim.cmd(("DiffviewOpen %s...%s"):format(branch, base))
+          end)
+        end,
+      },
       -- and add this
       sources = {
         git_log = {
-          win = {
-            input = {
-              keys = {
-                ["<CR>"] = { "diffview_commit", mode = { "i", "n" } },
-              },
-            },
-            list = {
-              keys = {
-                ["<CR>"] = "diffview_commit",
-              },
-            },
-          },
+          confirm = "diffview_commit",
+        },
+        git_branches = {
+          confirm = "diffview_branch",
+          all = true,
         },
       },
       layout = {
