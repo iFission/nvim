@@ -38,7 +38,7 @@ map("n", "<leader>gA", "<cmd>Gitsign stage_buffer<cr>", { desc = "Stage buffer" 
 map("n", "<leader>gu", "<cmd>Gitsign undo_stage_hunk<cr>", { desc = "Undo stage hunk" })
 map("n", "<leader>gp", "<cmd>Gitsign preview_hunk_inline<cr>", { desc = "Preview hunk" })
 map("n", "<leader>gs", function()
-  Snacks.picker.git_diff()
+  Snacks.picker.git_status()
 end, { desc = "Git status" })
 map("n", "<leader>gS", function()
   local gs = require("gitsigns")
