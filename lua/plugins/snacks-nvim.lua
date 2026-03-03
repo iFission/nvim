@@ -27,7 +27,7 @@ return {
       enabled = true,
       formatters = { file = { truncate = "center" } },
       actions = {
-        diffview_commit = function(picker, item)
+        diff_commit = function(picker, item)
           local sha = item and (item.commit or item.hash or item.sha or item.value)
           if type(sha) ~= "string" then
             sha = item and item.text or ""
@@ -40,11 +40,11 @@ return {
           picker:close()
           vim.schedule(function()
             -- show changes introduced by that commit
-            vim.cmd(("DiffviewOpen %s^..%s"):format(sha, sha))
+            vim.cmd(("CodeDiff %s^..%s"):format(sha, sha))
           end)
         end,
 
-        diffview_branch = function(picker, item)
+        diff_branch = function(picker, item)
           local function current_branch()
             local out = vim.fn.systemlist({ "git", "branch", "--show-current" })
             return (out and out[1] ~= "" and out[1]) or "HEAD"
@@ -59,17 +59,17 @@ return {
           local base = current_branch()
           picker:close()
           vim.schedule(function()
-            vim.cmd(("DiffviewOpen %s...%s"):format(branch, base))
+            vim.cmd(("CodeDiff %s...%s"):format(branch, base))
           end)
         end,
       },
       -- and add this
       sources = {
         git_log = {
-          confirm = "diffview_commit",
+          confirm = "diff_commit",
         },
         git_branches = {
-          confirm = "diffview_branch",
+          confirm = "diff_branch",
           all = true,
         },
       },
