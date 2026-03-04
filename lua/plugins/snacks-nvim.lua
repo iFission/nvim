@@ -71,22 +71,42 @@ return {
           all = true,
         },
       },
-      layout = {
-        layout = {
-          box = "horizontal",
-          width = 0.8,
-          min_width = 120,
-          height = 0.8,
-          {
-            box = "vertical",
-            border = true,
-            title = "{title} {live} {flags}",
-            { win = "input", height = 1, border = "bottom" },
-            { win = "list", border = "none" },
+      layout = function()
+        if vim.o.columns < 120 then
+          return {
+            layout = {
+              box = "vertical",
+              width = 0.8,
+              height = 0.8,
+              {
+                box = "vertical",
+                border = true,
+                title = "{title} {live} {flags}",
+                { win = "input", height = 1, border = "bottom" },
+                { win = "list", border = "none" },
+              },
+              { win = "preview", title = "{preview}", border = true, height = 0.4 },
+            },
+          }
+        end
+        return {
+          layout = {
+            box = "horizontal",
+            width = 0.8,
+            min_width = 120,
+            height = 0.8,
+            {
+              box = "vertical",
+              border = true,
+              title = "{title} {live} {flags}",
+              { win = "input", height = 1, border = "bottom" },
+              { win = "list", border = "none" },
+            },
+            { win = "preview", title = "{preview}", border = true, width = 0.65 },
           },
-          { win = "preview", title = "{preview}", border = true, width = 0.65 },
-        },
-      },
+        }
+      end,
+
       win = {
         input = {
           keys = {
