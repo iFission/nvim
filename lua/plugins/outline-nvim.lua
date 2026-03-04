@@ -1,6 +1,7 @@
 return {
   {
     "hedyhli/outline.nvim",
+    dependencies = { "epheien/outline-treesitter-provider.nvim" },
     lazy = true,
     cmd = { "Outline", "OutlineOpen" },
     keys = { -- Example mapping to toggle outline
@@ -13,6 +14,9 @@ return {
       },
       keymaps = {
         toggle_preview = "\\",
+      },
+      providers = {
+        priority = { "lsp", "coc", "markdown", "norg", "treesitter" },
       },
     },
   },

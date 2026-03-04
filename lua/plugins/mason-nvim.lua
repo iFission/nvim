@@ -10,6 +10,9 @@ return {
       ensure_installed = {
         "stylua",
         "shfmt",
+        "lua-language-server",
+        "typescript-language-server",
+        "yaml-language-server",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
