@@ -64,7 +64,7 @@ map("v", "<leader>gr", "<cmd>Telescope git_bcommits_range<CR>", { desc = "Restor
 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>")
 map("n", "<leader>gm", "?https.*merge<CR>y$", { desc = "Copy merge request URL" })
-map("n", "<leader>gu", "<cmd>GitBlameCopyFileURL<CR>", { desc = "Copy file URL" })
+map("n", "<leader>gy", "<cmd>GitBlameCopyFileURL<CR>", { desc = "Copy file URL" })
 
 map("n", "<leader>gl", function()
   require("gitsigns").blame_line()
@@ -313,6 +313,7 @@ map("n", "<leader>bc", "<cmd>enew<cr>", { desc = "Create file" })
 map("n", "<leader>br", function()
   Snacks.rename.rename_file()
 end, { desc = "Rename file" })
+map("n", "<leader>by", "<cmd>let @+=expand('%:p')<cr>", { desc = "Copy path" })
 
 -- window
 map({ "n", "x", "i" }, "<c-w>1", "<Cmd>lua require('bufferline').go_to(1, true)<CR>", { desc = "Go to buffer 1" })
