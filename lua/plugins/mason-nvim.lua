@@ -13,6 +13,8 @@ return {
         "lua-language-server",
         "typescript-language-server",
         "yaml-language-server",
+        "docker-compose-language-service",
+        "bash-language-server",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}

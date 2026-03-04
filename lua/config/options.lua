@@ -15,3 +15,21 @@ vim.diagnostic.config({
     source = "if_many",
   },
 })
+
+vim.filetype.add({
+  filename = {
+    [".bashrc"] = "bash",
+    [".zshrc"] = "bash",
+    [".bash_profile"] = "bash",
+    [".bash_aliases"] = "bash",
+  },
+})
+
+vim.filetype.add({
+  filename = {
+    ["docker-compose.yml"] = "yaml.docker-compose",
+    ["docker-compose.yaml"] = "yaml.docker-compose",
+    ["compose.yml"] = "yaml.docker-compose",
+    ["compose.yaml"] = "yaml.docker-compose",
+  },
+})
