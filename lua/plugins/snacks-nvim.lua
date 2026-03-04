@@ -39,7 +39,6 @@ return {
 
           picker:close()
           vim.schedule(function()
-            -- show changes introduced by that commit
             vim.cmd(("CodeDiff %s^..%s"):format(sha, sha))
           end)
         end,
@@ -63,7 +62,6 @@ return {
           end)
         end,
       },
-      -- and add this
       sources = {
         git_log = {
           confirm = "diff_commit",
