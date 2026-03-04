@@ -21,7 +21,7 @@ return {
       local defaults = require("cmp.config.default")()
       local luasnip = require("luasnip")
 
-      local auto_select = true -- set to false if you want explicit selection
+      local auto_select = false -- set to false if you want explicit selection
 
       local kind_icons = {
         Text = "󰉿 ",
