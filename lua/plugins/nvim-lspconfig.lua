@@ -2,7 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "hrsh7th/cmp-nvim-lsp" },
+    dependencies = { "saghen/blink.cmp" },
     opts = {
       inlay_hints = { enabled = true },
       diagnostics = {
@@ -20,12 +20,11 @@ return {
           end,
         })
       end
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local lspconfig = require("lspconfig")
       for server, server_opts in pairs(opts.servers or {}) do
-        lspconfig[server].setup(vim.tbl_deep_extend("force", {
-          capabilities = capabilities,
-        }, server_opts or {}))
+        server_opts = server_opts or {}
+        server_opts.capabilities = require("blink.cmp").get_lsp_capabilities(server_opts.capabilities)
+        lspconfig[server].setup(server_opts)
       end
     end,
   },
