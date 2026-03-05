@@ -48,6 +48,7 @@ return {
             ["<S-K>"] = actions.preview_scrolling_up,
             ["<S-L>"] = actions.preview_scrolling_right,
             ["<S-H>"] = actions.preview_scrolling_left,
+            ["<C-q>"] = require("trouble.sources.telescope").open,
           },
           i = {
             ["<esc>"] = actions.close,
@@ -66,6 +67,7 @@ return {
             ["<S-K>"] = actions.preview_scrolling_up,
             ["<S-L>"] = actions.preview_scrolling_right,
             ["<S-H>"] = actions.preview_scrolling_left,
+            ["<C-q>"] = require("trouble.sources.telescope").open,
           },
         },
       },

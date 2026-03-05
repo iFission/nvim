@@ -27,6 +27,10 @@ return {
       enabled = true,
       formatters = { file = { truncate = "center" } },
       actions = {
+        trouble_open = function(...)
+          return require("trouble.sources.snacks").actions.trouble_open.action(...)
+        end,
+
         diff_commit = function(picker, item)
           local sha = item and (item.commit or item.hash or item.sha or item.value)
           if type(sha) ~= "string" then
@@ -116,6 +120,7 @@ return {
             ["<S-K>"] = { "preview_scroll_up", mode = { "i", "n" } },
             ["<S-L>"] = { "preview_scroll_right", mode = { "i", "n" } },
             ["<S-H>"] = { "preview_scroll_left", mode = { "i", "n" } },
+            ["<C-q>"] = { "trouble_open", mode = { "n", "i" } },
           },
         },
       },
