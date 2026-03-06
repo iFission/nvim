@@ -15,6 +15,7 @@ return {
         "yaml-language-server",
         "docker-compose-language-service",
         "bash-language-server",
+        "prettier",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
