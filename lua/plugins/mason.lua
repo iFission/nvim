@@ -16,6 +16,8 @@ return {
         "docker-compose-language-service",
         "bash-language-server",
         "prettier",
+        "clangd",
+        "clang-format",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
