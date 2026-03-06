@@ -8,13 +8,11 @@ return {
       version = "^1.0.0",
     },
   },
-
   keys = {
     { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
     { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
     { "<leader>fd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
     { "<leader>fD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-
     {
       "<leader>uC",
       function()
@@ -28,6 +26,45 @@ return {
       require("telescope.builtin").find_files(vim.tbl_extend("force", opts or {}, { hidden = true, no_ignore = true }))
     end, require("telescope").extensions.live_grep_args.live_grep_args)
     local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
+
+    local function diff_commit(prompt_bufnr)
+      local entry = action_state.get_selected_entry()
+      -- git_commits / git_bcommits / git_bcommits_range all put the SHA in entry.value
+      -- entry.value may be the full "sha title" string or just the sha depending on picker
+      local raw = entry and (entry.value or entry.sha or entry.hash or "")
+      local sha = tostring(raw):match("%x%x%x%x%x%x%x+")
+      if not sha then
+        return
+      end
+      actions.close(prompt_bufnr)
+      vim.schedule(function()
+        vim.cmd(("CodeDiff %s"):format(sha))
+      end)
+    end
+
+    local function diff_branch(prompt_bufnr)
+      local entry = action_state.get_selected_entry()
+      local branch = entry and (entry.value or entry.name or "")
+      branch = tostring(branch):gsub("^%*%s*", ""):gsub("^%s+", "")
+      if branch == "" then
+        return
+      end
+      local current = vim.fn.systemlist({ "git", "branch", "--show-current" })
+      local base = (current and current[1] ~= "" and current[1]) or "HEAD"
+      actions.close(prompt_bufnr)
+      vim.schedule(function()
+        vim.cmd(("CodeDiff %s...%s"):format(branch, base))
+      end)
+    end
+
+    local commit_picker = {
+      mappings = {
+        i = { ["<CR>"] = diff_commit },
+        n = { ["<CR>"] = diff_commit },
+      },
+    }
+
     require("telescope").setup({
       defaults = {
         dynamic_preview_title = true,
@@ -68,6 +105,17 @@ return {
             ["<S-L>"] = actions.preview_scrolling_right,
             ["<S-H>"] = actions.preview_scrolling_left,
             ["<C-q>"] = require("trouble.sources.telescope").open,
+          },
+        },
+      },
+      pickers = {
+        git_commits = commit_picker,
+        git_bcommits = commit_picker,
+        git_bcommits_range = commit_picker,
+        git_branches = {
+          mappings = {
+            i = { ["<CR>"] = diff_branch },
+            n = { ["<CR>"] = diff_branch },
           },
         },
       },

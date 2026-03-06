@@ -43,7 +43,7 @@ return {
 
           picker:close()
           vim.schedule(function()
-            vim.cmd(("CodeDiff %s^..%s"):format(sha, sha))
+            vim.cmd(("CodeDiff %s"):format(sha))
           end)
         end,
 
