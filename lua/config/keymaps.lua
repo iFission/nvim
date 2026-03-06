@@ -34,7 +34,15 @@ map("n", "<leader>ga", "<cmd>Gitsign stage_hunk<cr>", { desc = "Stage hunk" })
 map("v", "<leader>ga", function()
   package.loaded.gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end, { desc = "Stage hunk" })
-map("n", "<leader>gA", "<cmd>Gitsign stage_buffer<cr>", { desc = "Stage buffer" })
+map("n", "<leader>gA", function()
+  local gs = require("gitsigns")
+  local hunks = gs.get_hunks()
+  if hunks and #hunks > 0 then
+    gs.stage_buffer()
+  else
+    gs.reset_buffer_index()
+  end
+end, { desc = "Stage/unstage buffer" })
 map("n", "<leader>gu", "<cmd>Gitsign undo_stage_hunk<cr>", { desc = "Undo stage hunk" })
 map("n", "<leader>gp", "<cmd>Gitsign preview_hunk_inline<cr>", { desc = "Preview hunk" })
 map("n", "<leader>ge", "<cmd>CodeDiff<cr>", { desc = "CodeDiff" })
