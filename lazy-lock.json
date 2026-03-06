@@ -28,7 +28,7 @@
   "mini.ai": { "branch": "main", "commit": "b0247752cf629ce7c6bd0a1efd82fb58ff60f9d6" },
   "minimap.vim": { "branch": "master", "commit": "57287e2dd28fa3e63276a32d11c729df14741d54" },
   "move.nvim": { "branch": "main", "commit": "599b14047b82e92874b9a408e4df228b965c3a1d" },
-  "multicursor.nvim": { "branch": "main", "commit": "811681faf44d8031685614cc00a148cd3ece697c" },
+  "multicursor.nvim": { "branch": "1.0", "commit": "811681faf44d8031685614cc00a148cd3ece697c" },
   "neo-tree.nvim": { "branch": "main", "commit": "9a1f0461c4cc62e64616bafe9425572ff6a5f245" },
   "neotest": { "branch": "master", "commit": "deadfb1af5ce458742671ad3a013acb9a6b41178" },
   "neotest-jest": { "branch": "main", "commit": "3f0cc2cff1ee05394081805c622dc2551b54d8c4" },
