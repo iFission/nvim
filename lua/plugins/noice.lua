@@ -9,9 +9,26 @@ return {
     opts = {
       messages = { enabled = true, view = "notify" },
       notify = { enabled = true, view = "notify" },
+      views = {
+        cmdline_popup = {
+          position = {
+            row = "20%",
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = "auto",
+          },
+        },
+      },
       cmdline = {
         enabled = true,
-        view = "cmdline",
+        view = "cmdline_popup",
+        format = {
+          cmdline = { view = "cmdline_popup" },
+          search_down = { view = "cmdline_popup" },
+          search_up = { view = "cmdline_popup" },
+        },
       },
       lsp = {
         override = {
@@ -35,7 +52,7 @@ return {
       },
       presets = {
         bottom_search = true,
-        command_palette = false,
+        command_palette = true,
         long_message_to_split = true,
         inc_rename = true,
       },

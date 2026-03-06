@@ -6,6 +6,21 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      cmdline = {
+        enabled = true,
+        keymap = {
+          preset = "inherit",
+        },
+        completion = {
+          menu = { auto_show = true },
+          list = {
+            selection = {
+              preselect = false,
+              auto_insert = false,
+            },
+          },
+        },
+      },
       keymap = {
         preset = "none",
         ["<Up>"] = { "select_prev", "fallback" },
