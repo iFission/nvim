@@ -146,7 +146,15 @@ return {
       },
 
       event_handlers = {
-        -- close after opening a file (your older config)
+        {
+          event = "file_added",
+          handler = function(file_path)
+            vim.cmd("edit " .. vim.fn.fnameescape(file_path))
+            vim.defer_fn(function()
+              require("neo-tree.command").execute({ action = "close" })
+            end, 100)
+          end,
+        },
         {
           event = "file_opened",
           handler = function(_file_path)
