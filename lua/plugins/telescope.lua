@@ -110,8 +110,6 @@ return {
       },
       pickers = {
         git_commits = commit_picker,
-        git_bcommits = commit_picker,
-        git_bcommits_range = commit_picker,
         git_branches = {
           mappings = {
             i = { ["<CR>"] = diff_branch },

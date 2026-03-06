@@ -19,6 +19,13 @@ return {
     notifier = {
       enabled = true,
       timeout = 3000,
+      filter = function(notif)
+        -- suppress codediff welcome_window cleanup bug
+        if notif.msg and notif.msg:match("welcome_window") then
+          return false
+        end
+        return true
+      end,
     },
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
@@ -40,7 +47,6 @@ return {
           if not sha then
             return
           end
-
           picker:close()
           vim.schedule(function()
             vim.cmd(("CodeDiff %s"):format(sha))
@@ -65,6 +71,25 @@ return {
             vim.cmd(("CodeDiff %s...%s"):format(branch, base))
           end)
         end,
+        diff_file = function(picker, item)
+          local file = item and (item.file or item.text)
+          if not file then
+            return
+          end
+          picker:close()
+          vim.defer_fn(function()
+            local cfg = require("codediff.config")
+            local prev_focus = cfg.options.explorer.initial_focus
+            cfg.options.explorer.initial_focus = "modified"
+
+            vim.cmd("edit " .. vim.fn.fnameescape(file))
+            vim.cmd("CodeDiff")
+
+            vim.defer_fn(function()
+              cfg.options.explorer.initial_focus = prev_focus
+            end, 200)
+          end, 50)
+        end,
       },
       sources = {
         git_log = {
@@ -73,6 +98,9 @@ return {
         git_branches = {
           confirm = "diff_branch",
           all = true,
+        },
+        git_status = {
+          confirm = "diff_file",
         },
       },
       layout = function()
@@ -137,16 +165,14 @@ return {
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
-        -- Setup some globals for debugging (lazy-loaded)
         _G.dd = function(...)
           Snacks.debug.inspect(...)
         end
         _G.bt = function()
           Snacks.debug.backtrace()
         end
-        vim.print = _G.dd -- Override print to use snacks for `:=` command
+        vim.print = _G.dd
 
-        -- Create some toggle mappings
         Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
         Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
         Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
