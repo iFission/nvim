@@ -216,12 +216,29 @@ map("n", "gC", function()
     },
   })
 end, { desc = "Source action" })
+local function goto_trouble_or_diagnostic(direction)
+  local ok, trouble = pcall(require, "trouble")
+  if ok and require("trouble").is_open() then
+    if direction == "prev" then
+      trouble.prev({ skip_groups = true, jump = true })
+    else
+      trouble.next({ skip_groups = true, jump = true })
+    end
+  else
+    if direction == "prev" then
+      vim.diagnostic.goto_prev()
+    else
+      vim.diagnostic.goto_next()
+    end
+  end
+end
+
 map("n", "g1", function()
-  vim.diagnostic.goto_prev()
-end, { desc = "Prev problem" })
+  goto_trouble_or_diagnostic("prev")
+end, { desc = "Prev trouble" })
 map("n", "g2", function()
-  vim.diagnostic.goto_next()
-end, { desc = "Next problem" })
+  goto_trouble_or_diagnostic("next")
+end, { desc = "Next trouble" })
 map("n", "<leader>o", "<cmd>SymbolsOutline<cr>", { desc = "Open symbols outline" })
 map("n", "<leader>2", function()
   require("telescope.builtin").lsp_definitions()
