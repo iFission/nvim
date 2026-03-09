@@ -333,7 +333,7 @@ map("n", "<leader>bj", "<Cmd>BufferLineMovePrev<CR>", { desc = "Buffer move prev
 map("n", "<leader>bk", "<Cmd>BufferLineMoveNext<CR>", { desc = "Buffer move next" })
 map("n", "<leader>bh", "<Cmd>BufferLineCloseLeft<CR>", { desc = "Close left tabs" })
 map("n", "<leader>bl", "<Cmd>BufferLineCloseRight<CR>", { desc = "Close right tabs" })
-map("n", "<leader>bc", "<cmd>enew<cr>", { desc = "Create file" })
+map("n", "<leader>bc", "<cmd>enew<cr><cmd>startinsert<cr>", { desc = "Create file" })
 map("n", "<leader>br", function()
   Snacks.rename.rename_file()
 end, { desc = "Rename file" })

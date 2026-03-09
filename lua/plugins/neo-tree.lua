@@ -152,6 +152,7 @@ return {
             vim.cmd("edit " .. vim.fn.fnameescape(file_path))
             vim.defer_fn(function()
               require("neo-tree.command").execute({ action = "close" })
+              vim.cmd("startinsert")
             end, 100)
           end,
         },
