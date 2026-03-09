@@ -6,6 +6,7 @@ return {
     cmd = { "Outline", "OutlineOpen" },
     keys = { -- Example mapping to toggle outline
       { "<leader>9", "<cmd>Outline<CR>", desc = "Toggle outline" },
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
     },
     opts = {
       outline_window = {
@@ -17,6 +18,9 @@ return {
       },
       providers = {
         priority = { "lsp", "coc", "markdown", "norg", "treesitter" },
+      },
+      symbol_folding = {
+        autofold_depth = false,
       },
     },
   },
