@@ -39,9 +39,17 @@ return {
       end
 
       local function lsp_clients()
+        local ok, conform = pcall(require, "conform")
+        local formatter_names = {}
+        if ok then
+          for _, f in ipairs(conform.list_formatters(0)) do
+            table.insert(formatter_names, f.name)
+          end
+        end
+
         local clients = {}
         for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
-          if client.name ~= "null-ls" and not vim.tbl_contains(clients, client.name) then
+          if not vim.tbl_contains(formatter_names, client.name) and not vim.tbl_contains(clients, client.name) then
             table.insert(clients, client.name)
           end
         end
@@ -51,23 +59,55 @@ return {
         return ""
       end
 
-      local function nullls_sources()
-        local ok_sources, sources = pcall(require, "null-ls.sources")
-        if not ok_sources then
+      local function lint_linters()
+        local ok, lint = pcall(require, "lint")
+        if not ok then
           return ""
         end
+        local linters = lint.linters_by_ft[vim.bo.filetype] or {}
+        local available = vim.tbl_filter(function(name)
+          return lint.linters[name] ~= nil
+        end, linters)
+        if #available > 0 then
+          return "󰛓 " .. table.concat(available, " ")
+        end
+        return ""
+      end
 
-        local ft = vim.bo.filetype
+      local function conform_formatters()
+        local ok, conform = pcall(require, "conform")
+        if not ok then
+          return ""
+        end
         local names = {}
-        for _, src in ipairs(sources.get_all() or {}) do
-          if sources.is_available(src, ft) and not vim.tbl_contains(names, src.name) then
-            table.insert(names, src.name)
+        for _, f in ipairs(conform.list_formatters(0)) do
+          if not vim.tbl_contains(names, f.name) then
+            table.insert(names, f.name)
           end
         end
         if next(names) then
-          return "󰟢 " .. table.concat(names, " ")
+          return " " .. table.concat(names, " ")
         end
         return ""
+      end
+
+      local function dap_clients()
+        local ok, dap = pcall(require, "dap")
+        if not ok then
+          return ""
+        end
+        local ft = vim.bo.filetype
+        local configs = dap.configurations[ft] or {}
+        local types = {}
+        for _, config in ipairs(configs) do
+          if not vim.tbl_contains(types, config.type) then
+            table.insert(types, config.type)
+          end
+        end
+        if #types == 0 then
+          return ""
+        end
+        return " " .. table.concat(types, " ")
       end
 
       return {
@@ -104,7 +144,9 @@ return {
             { "filetype", icon_only = false, separator = "", padding = { left = 2, right = 0 } },
             { ts_lang, padding = { left = 2, right = 0 } },
             { lsp_clients, padding = { left = 2, right = 0 } },
-            { nullls_sources, padding = { left = 2, right = 0 } },
+            { lint_linters, padding = { left = 2, right = 0 } },
+            { conform_formatters, padding = { left = 2, right = 0 } },
+            { dap_clients, padding = { left = 2, right = 0 } },
           },
           lualine_x = {
             {
