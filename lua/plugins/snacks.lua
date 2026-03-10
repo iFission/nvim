@@ -102,11 +102,34 @@ return {
         git_status = {
           confirm = "diff_file",
         },
+        smart = {
+          actions = {
+            switch_to_telescope_grep = function(picker)
+              local pattern = picker.input.filter.pattern or picker.input.filter.search or ""
+              picker:close()
+              require("telescope").extensions.live_grep_args.live_grep_args({
+                default_text = pattern,
+              })
+            end,
+          },
+          win = {
+            input = {
+              keys = {
+                ["<Tab>"] = {
+                  "switch_to_telescope_grep",
+                  desc = "Switch to Telescope Grep",
+                  mode = { "i", "n" },
+                },
+              },
+            },
+          },
+        },
       },
       layout = function()
         if vim.o.columns < 120 then
           return {
             layout = {
+              backdrop = false,
               box = "vertical",
               width = 0.8,
               height = 0.8,
@@ -117,12 +140,13 @@ return {
                 { win = "input", height = 1, border = "bottom" },
                 { win = "list", border = "none" },
               },
-              { win = "preview", title = "{preview}", border = true, height = 0.4 },
+              { win = "preview", title = "{preview}", border = true, height = 0.69 },
             },
           }
         end
         return {
           layout = {
+            backdrop = false,
             box = "horizontal",
             width = 0.8,
             min_width = 120,

@@ -22,9 +22,6 @@ return {
     },
   },
   config = function()
-    local cycle = require("telescope.cycle")(require("telescope.builtin").git_files, function(opts)
-      require("telescope.builtin").find_files(vim.tbl_extend("force", opts or {}, { hidden = true, no_ignore = true }))
-    end, require("telescope").extensions.live_grep_args.live_grep_args)
     local actions = require("telescope.actions")
     local action_state = require("telescope.actions.state")
 
@@ -68,15 +65,16 @@ return {
     require("telescope").setup({
       defaults = {
         dynamic_preview_title = true,
+        results_title = false,
         path_display = { "truncate" },
         sorting_strategy = "ascending",
         layout_strategy = "flex",
         layout_config = {
-          horizontal = { prompt_position = "top", preview_width = 0.6 },
-          vertical = { mirror = true, preview_height = 0.6, prompt_position = "top" },
+          horizontal = { prompt_position = "top", preview_width = 0.64 },
+          vertical = { mirror = true, preview_height = 0.64, prompt_position = "top" },
           flex = { flip_columns = 120 },
-          width = 0.87,
-          height = 0.80,
+          width = 0.80,
+          height = 0.81,
           preview_cutoff = 0,
         },
         mappings = {
@@ -89,16 +87,14 @@ return {
           },
           i = {
             ["<esc>"] = actions.close,
-            ["<leader><Space>"] = function()
-              cycle.next()
-            end,
             ["<S-Down>"] = actions.cycle_history_next,
             ["<S-Up>"] = actions.cycle_history_prev,
-            ["<Tab>"] = function()
-              cycle.next()
-            end,
-            ["<S-Tab>"] = function()
-              cycle.previous()
+            ["<Tab>"] = function(prompt_bufnr)
+              local action_state = require("telescope.actions.state")
+              local current_picker = action_state.get_current_picker(prompt_bufnr)
+              local prompt = current_picker:_get_prompt()
+              require("telescope.actions").close(prompt_bufnr)
+              Snacks.picker.smart({ pattern = prompt })
             end,
             ["<S-J>"] = actions.preview_scrolling_down,
             ["<S-K>"] = actions.preview_scrolling_up,
