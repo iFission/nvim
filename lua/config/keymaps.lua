@@ -314,7 +314,24 @@ map("v", "<leader>Dc", function()
   ))
 end, { desc = "Compare with clipboard" })
 map("n", "<leader>Df", function()
-  require("telescope").extensions.diff.diff_current({ hidden = true })
+  require("snacks").picker.smart({
+    hidden = true,
+    confirm = function(picker, item)
+      picker:close()
+      vim.schedule(function()
+        local current = vim.api.nvim_buf_get_name(0)
+        if current == "" or not item then
+          return
+        end
+        vim.cmd(
+          ("CodeDiff file %s %s"):format(
+            vim.fn.fnameescape(current),
+            vim.fn.fnameescape(item.file or item.path or item.value or "")
+          )
+        )
+      end)
+    end,
+  })
 end, { desc = "Compare with file" })
 
 -- buffer
