@@ -39,17 +39,29 @@ return {
       end
 
       local function lsp_clients()
-        local ok, conform = pcall(require, "conform")
+        local ok_conform, conform = pcall(require, "conform")
         local formatter_names = {}
-        if ok then
+        if ok_conform then
           for _, f in ipairs(conform.list_formatters(0)) do
             table.insert(formatter_names, f.name)
           end
         end
 
+        local ok_lint, lint = pcall(require, "lint")
+        local linter_names = {}
+        if ok_lint then
+          for _, name in ipairs(lint.linters_by_ft[vim.bo.filetype] or {}) do
+            table.insert(linter_names, name)
+          end
+        end
+
         local clients = {}
         for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
-          if not vim.tbl_contains(formatter_names, client.name) and not vim.tbl_contains(clients, client.name) then
+          if
+            not vim.tbl_contains(formatter_names, client.name)
+            and not vim.tbl_contains(linter_names, client.name)
+            and not vim.tbl_contains(clients, client.name)
+          then
             table.insert(clients, client.name)
           end
         end
