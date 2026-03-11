@@ -7,9 +7,11 @@ return {
         view_mode = "tree",
       },
       keymaps = {
+        view = { toggle_stage = "a" },
         explorer = {
           select = "o",
           hover = "-",
+          restore = "d",
         },
       },
     },
