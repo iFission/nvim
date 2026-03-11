@@ -3,6 +3,12 @@ return {
     "lewis6991/gitsigns.nvim",
     init = function()
       require("gitsigns").setup({
+        current_line_blame = true,
+        current_line_blame_opts = {
+          virt_text = true,
+          virt_text_pos = "eol", -- or "right_align"
+          delay = 100,
+        },
         attach_to_untracked = true,
         signs = {
           add = { show_count = true },
