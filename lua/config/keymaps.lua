@@ -262,6 +262,9 @@ end, { desc = "Goto Implementation" })
 map("n", "<leader>rn", function()
   vim.lsp.buf.rename()
 end, { desc = "Rename current symbol" })
+map("n", "<leader>gn", function()
+  require("nvim-navbuddy").open()
+end, { desc = "Navbuddy" })
 
 -- Comment
 map("n", "<leader>/", function()
