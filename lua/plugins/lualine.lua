@@ -29,13 +29,12 @@ return {
       }
 
       local function ts_lang()
-        local ok, highlighter = pcall(function()
-          return require("vim.treesitter.highlighter").active[vim.api.nvim_get_current_buf()]
-        end)
-        if not ok or not highlighter or not highlighter.tree or not highlighter.tree._lang then
+        local ok, parser = pcall(vim.treesitter.get_parser, 0)
+        if not ok or not parser then
           return ""
         end
-        return "󰹩 " .. highlighter.tree._lang
+
+        return "󰹩 " .. parser:lang()
       end
 
       local function lsp_clients()
