@@ -1,3 +1,5 @@
+vim.cmd("source ~/.vimrc")
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -39,5 +41,3 @@ vim.api.nvim_create_autocmd("OptionSet", {
     vim.opt_local.diffopt:append("linematch:80")
   end,
 })
-
-vim.cmd("source ~/.vimrc")

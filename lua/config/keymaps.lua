@@ -420,21 +420,40 @@ map(
 )
 
 -- arrow
-map({ "n", "x" }, "<Up>", "{")
-map({ "n", "x" }, "<Down>", "}")
+local function has_treesitter()
+  local ok, parser = pcall(vim.treesitter.get_parser, 0)
+  return ok and parser ~= nil
+end
+
+map({ "n", "x", "o" }, "<Up>", function()
+  if has_treesitter() then
+    vim.cmd("Treewalker Up")
+  else
+    vim.cmd("normal! {")
+  end
+end, { desc = "Prev neighbor node / paragraph" })
+map({ "n", "x", "o" }, "<Down>", function()
+  if has_treesitter() then
+    vim.cmd("Treewalker Down")
+  else
+    vim.cmd("normal! }")
+  end
+end, { desc = "Next neighbor node / paragraph" })
+map({ "n", "o" }, "<S-Left>", function()
+  vim.cmd("Treewalker Left")
+end, { desc = "Treewalker Left" })
+map({ "n", "o" }, "<S-Right>", function()
+  vim.cmd("Treewalker Right")
+end, { desc = "Treewalker Right" })
 
 -- move
-map("n", "<S-Up>", ":MoveLine(-1)<cr>", { desc = "Move line up" })
-map("n", "<S-Down>", ":MoveLine(1)<cr>", { desc = "Move line down" })
+map("n", "<S-Up>", ":Treewalker SwapUp<cr>", { desc = "Treewalker SwapUp" })
+map("n", "<S-Down>", ":Treewalker SwapDown<cr>", { desc = "MoTreewalker SwapDown" })
 map("i", "<S-Up>", "<Esc>:m .-2<CR>==gi", { desc = "Move line up" })
 map("i", "<S-Down>", "<Esc>:m .+1<CR>==gi", { desc = "Move line down" })
-map("n", "<S-Left>", ":MoveHChar(-1)<cr>", { desc = "Move char left" })
-map("n", "<S-Right>", ":MoveHChar(1)<cr>", { desc = "Move char right" })
 
 map("v", "<S-Up>", ":MoveBlock(-1)<cr>", { desc = "Move line up" })
 map("v", "<S-Down>", ":MoveBlock(1)<cr>", { desc = "Move line down" })
-map("v", "<S-Left>", ":MoveHBlock(-1)<cr>", { desc = "Move block left" })
-map("v", "<S-Right>", ":MoveHBlock(1)<cr>", { desc = "Move block right" })
 
 -- paste
 map("n", "<C-v>", "gP")
