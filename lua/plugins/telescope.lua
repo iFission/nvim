@@ -86,7 +86,12 @@ return {
             ["<C-q>"] = require("trouble.sources.telescope").open,
           },
           i = {
-            ["<esc>"] = actions.close,
+            ["<esc>"] = function(prompt_bufnr)
+              require("telescope.actions").close(prompt_bufnr)
+              vim.schedule(function()
+                vim.cmd("normal! gv")
+              end)
+            end,
             ["<S-Down>"] = actions.cycle_history_next,
             ["<S-Up>"] = actions.cycle_history_prev,
             ["<Tab>"] = function(prompt_bufnr)

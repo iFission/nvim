@@ -195,7 +195,16 @@ return {
       win = {
         input = {
           keys = {
-            ["<esc>"] = { "close", mode = { "n", "i" } },
+            ["<esc>"] = {
+              function(picker)
+                picker:close()
+                vim.schedule(function()
+                  vim.cmd("normal! gv")
+                end)
+              end,
+              desc = "Close and restore visual selection",
+              mode = { "n", "i" },
+            },
             ["<Tab>"] = { "toggle_live", mode = { "i", "n" } },
             ["<S-J>"] = { "preview_scroll_down", mode = { "i", "n" } },
             ["<S-K>"] = { "preview_scroll_up", mode = { "i", "n" } },
