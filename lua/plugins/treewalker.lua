@@ -3,7 +3,7 @@ return {
     "aaronik/treewalker.nvim",
     event = "BufEnter",
     opts = {
-      scope_confined = false,
+      scope_confined = true,
     },
   },
 }
