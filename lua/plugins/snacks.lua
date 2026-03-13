@@ -53,6 +53,29 @@ return {
           end)
         end,
 
+        diff_file_commit = function(picker, item)
+          local sha = item and (item.commit or item.hash or item.sha or item.value)
+          if type(sha) ~= "string" then
+            sha = item and item.text or ""
+          end
+          sha = sha:match("%x%x%x%x%x%x%x+")
+          if not sha then
+            return
+          end
+          picker:close()
+          vim.defer_fn(function()
+            local cfg = require("codediff.config")
+            local prev_focus = cfg.options.explorer.initial_focus
+            cfg.options.explorer.initial_focus = "modified"
+
+            vim.cmd(("CodeDiff %s^ %s"):format(sha, sha))
+
+            vim.defer_fn(function()
+              cfg.options.explorer.initial_focus = prev_focus
+            end, 200)
+          end, 50)
+        end,
+
         diff_branch = function(picker, item)
           local function current_branch()
             local out = vim.fn.systemlist({ "git", "branch", "--show-current" })
@@ -71,7 +94,8 @@ return {
             vim.cmd(("CodeDiff %s...%s"):format(branch, base))
           end)
         end,
-        diff_file = function(picker, item)
+
+        diff_head_file = function(picker, item)
           local file = item and (item.file or item.text)
           if not file then
             return
@@ -82,7 +106,6 @@ return {
             local prev_focus = cfg.options.explorer.initial_focus
             cfg.options.explorer.initial_focus = "modified"
 
-            vim.cmd("edit " .. vim.fn.fnameescape(file))
             vim.cmd("CodeDiff")
 
             vim.defer_fn(function()
@@ -95,12 +118,18 @@ return {
         git_log = {
           confirm = "diff_commit",
         },
+        git_log_file = {
+          confirm = "diff_file_commit",
+        },
+        git_log_line = {
+          confirm = "diff_file_commit",
+        },
         git_branches = {
           confirm = "diff_branch",
           all = true,
         },
         git_status = {
-          confirm = "diff_file",
+          confirm = "diff_head_file",
         },
         smart = {
           actions = {
