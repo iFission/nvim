@@ -1,4 +1,14 @@
 vim.cmd("source ~/.vimrc")
+vim.opt.sessionoptions = {
+  "blank",
+  "buffers",
+  "curdir",
+  "folds",
+  "help",
+  "tabpages",
+  "winsize",
+  "globals",
+}
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
