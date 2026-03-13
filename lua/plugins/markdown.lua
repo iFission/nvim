@@ -12,7 +12,7 @@ return {
     end,
     keys = {
       {
-        "<leader>cp",
+        "<leader>up",
         ft = "markdown",
         "<cmd>MarkdownPreviewToggle<cr>",
         desc = "Markdown Preview",
