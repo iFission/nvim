@@ -20,7 +20,7 @@ return {
         priority = { "lsp", "coc", "markdown", "norg", "treesitter" },
       },
       symbol_folding = {
-        autofold_depth = false,
+        autofold_depth = 3,
       },
     },
   },
