@@ -11,6 +11,7 @@ map({ "n", "i", "v" }, "<c-q>", "<cmd>quitall!<cr>", { desc = "Quit", remap = tr
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<leader>bn", "<cmd>tabnew<cr>", { desc = "New tab" })
 map("n", "<leader>sd", "<cmd>SessionDelete<cr>", { desc = "Session delete" })
+map("n", "<leader>sd", "<cmd>SessionDelete<cr>", { desc = "Session delete" })
 
 -- package
 map("n", "<leader>ps", "<cmd>Lazy install<cr>", { desc = "Lazy" })
@@ -89,7 +90,24 @@ end, { desc = "Gitui" })
 map("n", "<leader>gh", "<cmd>CodeDiff history<CR>", { desc = "CodeDiff history" })
 
 -- file
-map("n", "<leader>W", "<cmd>w !sudo tee %<cr>", { desc = "Force write" })
+map("n", "<leader>W", function()
+  local password = vim.fn.inputsecret("sudo password: ")
+  if password == "" then
+    return
+  end
+  local tmp = vim.fn.tempname()
+  vim.cmd("write! " .. vim.fn.fnameescape(tmp))
+  vim.fn.system(
+    "echo "
+      .. vim.fn.shellescape(password)
+      .. " | sudo -S cp "
+      .. vim.fn.shellescape(tmp)
+      .. " "
+      .. vim.fn.shellescape(vim.fn.expand("%:p"))
+  )
+  vim.fn.delete(tmp)
+  vim.cmd("edit!")
+end, { desc = "Sudo write" })
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><cmd>stopinsert<cr>", { desc = "Save file" })
 map("n", "<leader><C-s>", "<cmd>noa w<cr>", { desc = "Save without formatting" })
 
