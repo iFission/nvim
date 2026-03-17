@@ -6,6 +6,21 @@ local map = function(mode, lhs, rhs, opts)
   vim.keymap.set(mode, lhs, rhs, opts)
 end
 
+local function with_mode(fn)
+  return function(...)
+    local buf = vim.api.nvim_get_current_buf()
+    vim.b[buf].pre_picker_mode = vim.fn.mode()
+    vim.b[buf].pre_picker_buf = buf
+    fn(...)
+  end
+end
+
+local function with_mode_cmd(cmd)
+  return with_mode(function()
+    vim.cmd(cmd)
+  end)
+end
+
 -- nvim
 map({ "n", "i", "v" }, "<c-q>", "<cmd>quitall!<cr>", { desc = "Quit", remap = true })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
@@ -47,9 +62,14 @@ end, { desc = "Stage/unstage buffer" })
 map("n", "<leader>gu", "<cmd>Gitsign undo_stage_hunk<cr>", { desc = "Undo stage hunk" })
 map("n", "<leader>gp", "<cmd>Gitsign preview_hunk_inline<cr>", { desc = "Preview hunk" })
 map("n", "<leader>ge", "<cmd>CodeDiff<cr>", { desc = "CodeDiff" })
-map("n", "<leader>gs", function()
-  Snacks.picker.git_status()
-end, { desc = "Git status" })
+map(
+  "n",
+  "<leader>gs",
+  with_mode(function()
+    Snacks.picker.git_status()
+  end),
+  { desc = "Git status" }
+)
 map("n", "<leader>gS", function()
   local gs = require("gitsigns")
   local cfg = require("gitsigns.config").config
@@ -63,13 +83,18 @@ map("n", "<leader>gS", function()
   vim.notify("Gitsigns view " .. (enable and "ON" or "OFF"))
 end, { desc = "Toggle gitsigns view (deleted/linehl/numhl/word_diff)" })
 
-map("n", "<leader>gb", function()
-  Snacks.picker.git_branches()
-end, { desc = "Branches" })
-map("n", "<leader>gc", "<cmd>AdvancedGitSearch search_log_content<CR>", { desc = "Commits (repo)" })
-map("n", "<leader>gC", "<cmd>AdvancedGitSearch search_log_content_file<CR>", { desc = "Commits (file)" })
-map("n", "<leader>gr", "<cmd>Telescope git_bcommits<CR>", { desc = "Restore commit (file)" })
-map("v", "<leader>gr", "<cmd>Telescope git_bcommits_range<CR>", { desc = "Restore commit (range)" })
+map(
+  "n",
+  "<leader>gb",
+  with_mode(function()
+    Snacks.picker.git_branches()
+  end),
+  { desc = "Branches" }
+)
+map("n", "<leader>gc", with_mode_cmd("AdvancedGitSearch search_log_content"), { desc = "Commits (repo)" })
+map("n", "<leader>gC", with_mode_cmd("AdvancedGitSearch search_log_content_file"), { desc = "Commits (file)" })
+map("n", "<leader>gr", with_mode_cmd("Telescope git_bcommits"), { desc = "Restore commit (file)" })
+map("v", "<leader>gr", with_mode_cmd("Telescope git_bcommits_range"), { desc = "Restore commit (range)" })
 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>")
 map("n", "<leader>gm", "?https.*merge<CR>y$", { desc = "Copy merge request URL" })
@@ -96,7 +121,7 @@ map("n", "<leader>W", function()
     return
   end
   local tmp = vim.fn.tempname()
-  vim.cmd("write! " .. vim.fn.fnameescape(tmp))
+  vim.cmd("silent! write! " .. vim.fn.fnameescape(tmp))
   vim.fn.system(
     "echo "
       .. vim.fn.shellescape(password)
@@ -106,115 +131,187 @@ map("n", "<leader>W", function()
       .. vim.fn.shellescape(vim.fn.expand("%:p"))
   )
   vim.fn.delete(tmp)
-  vim.cmd("edit!")
+  vim.cmd("silent! edit!")
+  vim.bo.readonly = false
+  vim.bo.modified = false
 end, { desc = "Sudo write" })
 map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><cmd>stopinsert<cr>", { desc = "Save file" })
 map("n", "<leader><C-s>", "<cmd>noa w<cr>", { desc = "Save without formatting" })
 
 -- find
-map({ "n", "v" }, "<leader>1", function()
-  Snacks.picker.resume()
-end, { desc = "Resume previous snacks search" })
-map({ "n", "v" }, "<leader>2", "<cmd> Telescope resume<cr>", { desc = "Resume previous telescope search" })
-map({ "n", "v" }, "<leader>3", function()
-  require("telescope.builtin").commands()
-end, { desc = "Commands" })
-map({ "n", "v" }, "<leader>#", function()
-  Snacks.picker.keymaps()
-end, { desc = "Find keymaps" })
-map("n", "<leader>4", "<cmd> Telescope live_grep_args<cr>", { desc = "Find word" })
-map("v", "<leader>4", function()
-  function vim.getVisualSelection()
-    vim.cmd('noau normal! "vy"')
-    local text = vim.fn.getreg("v")
-    vim.fn.setreg("v", {})
+map(
+  { "n", "v" },
+  "<leader>1",
+  with_mode(function()
+    Snacks.picker.resume()
+  end),
+  { desc = "Resume previous snacks search" }
+)
+map({ "n", "v" }, "<leader>2", with_mode_cmd("Telescope resume"), { desc = "Resume previous telescope search" })
+map(
+  { "n", "v" },
+  "<leader>3",
+  with_mode(function()
+    require("telescope.builtin").commands()
+  end),
+  { desc = "Commands" }
+)
+map(
+  { "n", "v" },
+  "<leader>#",
+  with_mode(function()
+    Snacks.picker.keymaps()
+  end),
+  { desc = "Find keymaps" }
+)
+map("n", "<leader>4", with_mode_cmd("Telescope live_grep_args"), { desc = "Find word" })
+map(
+  "v",
+  "<leader>4",
+  with_mode(function()
+    function vim.getVisualSelection()
+      vim.cmd('noau normal! "vy"')
+      local text = vim.fn.getreg("v")
+      vim.fn.setreg("v", {})
 
-    text = string.gsub(text, "\n", "")
-    if #text > 0 then
-      return text
-    else
-      return ""
+      text = string.gsub(text, "\n", "")
+      if #text > 0 then
+        return text
+      else
+        return ""
+      end
     end
-  end
 
-  local text = vim.getVisualSelection()
-  require("telescope").extensions.live_grep_args.live_grep_args({ default_text = text })
-end, { desc = "Find word in selection" })
-map("n", "<leader>fsr", function()
-  Snacks.picker.resume()
-end, { desc = "Snacks resume" })
-map("n", "<leader>fp", function()
-  Snacks.picker()
-end, { desc = "Snacks picker" })
-map("n", "<leader><leader>", function()
-  Snacks.picker.smart({ hidden = true, ignored = false })
-end, { desc = "Find git files" })
-map("v", "<leader><leader>", function()
-  function vim.getVisualSelection()
-    vim.cmd('noau normal! "vy"')
-    local text = vim.fn.getreg("v")
-    vim.fn.setreg("v", {})
+    local text = vim.getVisualSelection()
+    require("telescope").extensions.live_grep_args.live_grep_args({ default_text = text })
+  end),
+  { desc = "Find word in selection" }
+)
+map(
+  "n",
+  "<leader>fsr",
+  with_mode(function()
+    Snacks.picker.resume()
+  end),
+  { desc = "Snacks resume" }
+)
+map(
+  "n",
+  "<leader>fp",
+  with_mode(function()
+    Snacks.picker()
+  end),
+  { desc = "Snacks picker" }
+)
+map(
+  "n",
+  "<leader><leader>",
+  with_mode(function()
+    Snacks.picker.smart({ hidden = true, ignored = false })
+  end),
+  { desc = "Find git files" }
+)
+map(
+  "v",
+  "<leader><leader>",
+  with_mode(function()
+    function vim.getVisualSelection()
+      vim.cmd('noau normal! "vy"')
+      local text = vim.fn.getreg("v")
+      vim.fn.setreg("v", {})
 
-    text = string.gsub(text, "\n", "")
-    if #text > 0 then
-      return text
-    else
-      return ""
+      text = string.gsub(text, "\n", "")
+      if #text > 0 then
+        return text
+      else
+        return ""
+      end
     end
-  end
 
-  local text = vim.getVisualSelection()
-  require("telescope").extensions.live_grep_args.live_grep_args({ default_text = text })
-end, { desc = "Find word in selection" })
-map("n", "<leader>ff", function()
-  require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
-end, { desc = "Find files" })
-map("v", "<leader>ff", function()
-  function vim.getVisualSelection()
-    vim.cmd('noau normal! "vy"')
-    local text = vim.fn.getreg("v")
-    vim.fn.setreg("v", {})
+    local text = vim.getVisualSelection()
+    require("telescope").extensions.live_grep_args.live_grep_args({ default_text = text })
+  end),
+  { desc = "Find word in selection" }
+)
+map(
+  "n",
+  "<leader>ff",
+  with_mode(function()
+    require("telescope.builtin").find_files({ hidden = true, no_ignore = true })
+  end),
+  { desc = "Find files" }
+)
+map(
+  "v",
+  "<leader>ff",
+  with_mode(function()
+    function vim.getVisualSelection()
+      vim.cmd('noau normal! "vy"')
+      local text = vim.fn.getreg("v")
+      vim.fn.setreg("v", {})
 
-    text = string.gsub(text, "\n", "")
-    if #text > 0 then
-      return text
-    else
-      return ""
+      text = string.gsub(text, "\n", "")
+      if #text > 0 then
+        return text
+      else
+        return ""
+      end
     end
-  end
 
-  local text = vim.getVisualSelection()
+    local text = vim.getVisualSelection()
 
-  require("telescope.builtin").find_files({ hidden = true, no_ignore = true, default_text = text })
-end, { desc = "Find files" })
-map("n", "<leader>fF", function()
-  require("telescope.builtin").git_files()
-end, { desc = "Find git files" })
-map("n", "<leader>ft", "<cmd>Telescope<cr>", { desc = "Telescope" })
-map("n", "<leader>fh", "<cmd> Telescope oldfiles<cr>", { desc = "Find history" })
-map("n", "<leader>fH", "<cmd> Telescope help_tags<cr>", { desc = "Find help" })
-map("n", "<leader>0", "<cmd> Telescope buffers<cr>", { desc = "Buffers" })
+    require("telescope.builtin").find_files({ hidden = true, no_ignore = true, default_text = text })
+  end),
+  { desc = "Find files" }
+)
+map(
+  "n",
+  "<leader>fF",
+  with_mode(function()
+    require("telescope.builtin").git_files()
+  end),
+  { desc = "Find git files" }
+)
+map("n", "<leader>ft", with_mode_cmd("Telescope"), { desc = "Telescope" })
+map("n", "<leader>fh", with_mode_cmd("Telescope oldfiles"), { desc = "Find history" })
+map("n", "<leader>fH", with_mode_cmd("Telescope help_tags"), { desc = "Find help" })
+map("n", "<leader>0", with_mode_cmd("Telescope buffers"), { desc = "Buffers" })
 map(
   "n",
   "<leader>fo",
-  "<cmd> Telescope file_browser path=%:p:h select_buffer=true<cr>",
+  with_mode_cmd("Telescope file_browser path=%:p:h select_buffer=true"),
   { desc = "File browser", silent = true }
 )
-map("n", ")", function()
-  require("telescope.builtin").buffers()
-end, { desc = "Find buffer", silent = true })
+map(
+  "n",
+  ")",
+  with_mode(function()
+    require("telescope.builtin").buffers()
+  end),
+  { desc = "Find buffer", silent = true }
+)
 map("n", "<leader>fm", "<cmd> messages<cr>", { desc = "Find messages" })
-map("n", "<leader>fM", "<cmd> Telescope marks<cr>", { desc = "Find marks" })
-map("n", "<leader>fk", function()
-  require("telescope.builtin").keymaps()
-end, { desc = "Find keymaps" })
+map("n", "<leader>fM", with_mode_cmd("Telescope marks"), { desc = "Find marks" })
+map(
+  "n",
+  "<leader>fk",
+  with_mode(function()
+    require("telescope.builtin").keymaps()
+  end),
+  { desc = "Find keymaps" }
+)
 map("n", "<leader>fn", function()
   require("noice").cmd("history")
 end, { desc = "Find notifications" })
-map("n", "<leader>fj", function()
-  require("telescope.builtin").jumplist()
-end, { desc = "Find jumplist" })
-map("n", "<leader>f/", "<cmd> Telescope builtin<cr>", { desc = "Find builtin" })
+map(
+  "n",
+  "<leader>fj",
+  with_mode(function()
+    require("telescope.builtin").jumplist()
+  end),
+  { desc = "Find jumplist" }
+)
+map("n", "<leader>f/", with_mode_cmd("Telescope builtin"), { desc = "Find builtin" })
 
 -- editing/intellisense/code
 map("n", "gi", function()
@@ -274,9 +371,14 @@ map("n", "<leader>>", function()
     },
   })
 end, { desc = "Source action" })
-map("n", "gi", function()
-  require("telescope.builtin").lsp_implementations({ reuse_win = true })
-end, { desc = "Goto Implementation" })
+map(
+  "n",
+  "gi",
+  with_mode(function()
+    require("telescope.builtin").lsp_implementations({ reuse_win = true })
+  end),
+  { desc = "Goto Implementation" }
+)
 map("n", "<leader>rn", function()
   vim.lsp.buf.rename()
 end, { desc = "Rename current symbol" })
@@ -331,26 +433,31 @@ map("v", "<leader>Dc", function()
     ftype
   ))
 end, { desc = "Compare with clipboard" })
-map("n", "<leader>Df", function()
-  require("snacks").picker.smart({
-    hidden = true,
-    confirm = function(picker, item)
-      picker:close()
-      vim.schedule(function()
-        local current = vim.api.nvim_buf_get_name(0)
-        if current == "" or not item then
-          return
-        end
-        vim.cmd(
-          ("CodeDiff file %s %s"):format(
-            vim.fn.fnameescape(current),
-            vim.fn.fnameescape(item.file or item.path or item.value or "")
+map(
+  "n",
+  "<leader>Df",
+  with_mode(function()
+    require("snacks").picker.smart({
+      hidden = true,
+      confirm = function(picker, item)
+        picker:close()
+        vim.schedule(function()
+          local current = vim.api.nvim_buf_get_name(0)
+          if current == "" or not item then
+            return
+          end
+          vim.cmd(
+            ("CodeDiff file %s %s"):format(
+              vim.fn.fnameescape(current),
+              vim.fn.fnameescape(item.file or item.path or item.value or "")
+            )
           )
-        )
-      end)
-    end,
-  })
-end, { desc = "Compare with file" })
+        end)
+      end,
+    })
+  end),
+  { desc = "Compare with file" }
+)
 
 -- buffer
 -- map("n", "<leader>b", { name = "Buffers" })

@@ -197,12 +197,21 @@ return {
           keys = {
             ["<esc>"] = {
               function(picker)
+                local alt_buf = vim.fn.bufnr("#")
+                local pre_mode = alt_buf > 0 and vim.b[alt_buf].pre_picker_mode or nil
+                local pre_buf = alt_buf > 0 and vim.b[alt_buf].pre_picker_buf or nil
                 picker:close()
                 vim.schedule(function()
-                  vim.cmd("normal! gv")
+                  if pre_mode and pre_buf and vim.api.nvim_get_current_buf() == pre_buf then
+                    if pre_mode:find("[vV\22]") then
+                      vim.cmd("normal! gv")
+                    elseif pre_mode == "i" then
+                      vim.cmd("startinsert")
+                    end
+                  end
                 end)
               end,
-              desc = "Close and restore visual selection",
+              desc = "Close and restore mode",
               mode = { "n", "i" },
             },
             ["<Tab>"] = { "toggle_live", mode = { "i", "n" } },

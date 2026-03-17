@@ -25,10 +25,24 @@ return {
     local actions = require("telescope.actions")
     local action_state = require("telescope.actions.state")
 
+    local function restore_mode_close(prompt_bufnr)
+      local alt_buf = vim.fn.bufnr("#")
+      local pre_mode = alt_buf > 0 and vim.b[alt_buf].pre_picker_mode or nil
+      local pre_buf = alt_buf > 0 and vim.b[alt_buf].pre_picker_buf or nil
+      actions.close(prompt_bufnr)
+      vim.schedule(function()
+        if pre_mode and pre_buf and vim.api.nvim_get_current_buf() == pre_buf then
+          if pre_mode:find("[vV\22]") then
+            vim.cmd("normal! gv")
+          elseif pre_mode == "i" then
+            vim.cmd("startinsert")
+          end
+        end
+      end)
+    end
+
     local function diff_commit(prompt_bufnr)
       local entry = action_state.get_selected_entry()
-      -- git_commits / git_bcommits / git_bcommits_range all put the SHA in entry.value
-      -- entry.value may be the full "sha title" string or just the sha depending on picker
       local raw = entry and (entry.value or entry.sha or entry.hash or "")
       local sha = tostring(raw):match("%x%x%x%x%x%x%x+")
       if not sha then
@@ -79,6 +93,7 @@ return {
         },
         mappings = {
           n = {
+            ["<esc>"] = restore_mode_close,
             ["<S-J>"] = actions.preview_scrolling_down,
             ["<S-K>"] = actions.preview_scrolling_up,
             ["<S-L>"] = actions.preview_scrolling_right,
@@ -86,19 +101,13 @@ return {
             ["<C-q>"] = require("trouble.sources.telescope").open,
           },
           i = {
-            ["<esc>"] = function(prompt_bufnr)
-              require("telescope.actions").close(prompt_bufnr)
-              vim.schedule(function()
-                vim.cmd("normal! gv")
-              end)
-            end,
+            ["<esc>"] = restore_mode_close,
             ["<S-Down>"] = actions.cycle_history_next,
             ["<S-Up>"] = actions.cycle_history_prev,
             ["<Tab>"] = function(prompt_bufnr)
-              local action_state = require("telescope.actions.state")
               local current_picker = action_state.get_current_picker(prompt_bufnr)
               local prompt = current_picker:_get_prompt()
-              require("telescope.actions").close(prompt_bufnr)
+              actions.close(prompt_bufnr)
               Snacks.picker.smart({ pattern = prompt })
             end,
             ["<S-J>"] = actions.preview_scrolling_down,
