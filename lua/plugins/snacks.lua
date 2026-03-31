@@ -132,6 +132,20 @@ return {
           confirm = "diff_head_file",
         },
         smart = {
+          -- show path on preview title
+          on_change = function(picker, item)
+            if not (item and item.file) then
+              return
+            end
+            vim.schedule(function()
+              local cwd = picker:cwd()
+              local path = vim.fn.fnamemodify(item.file, ":p")
+              if cwd and path:find(cwd, 1, true) == 1 then
+                path = path:sub(#cwd + 2)
+              end
+              picker.preview.win:set_title(path)
+            end)
+          end,
           actions = {
             switch_to_telescope_grep = function(picker)
               local pattern = picker.input.filter.pattern or picker.input.filter.search or ""
