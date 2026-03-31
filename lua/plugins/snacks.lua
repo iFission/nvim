@@ -120,6 +120,13 @@ return {
         },
         git_log_file = {
           confirm = "diff_file_commit",
+          win = {
+            input = {
+              keys = {
+                ["<S-CR>"] = { "diff_branch", mode = { "n", "i" } },
+              },
+            },
+          },
         },
         git_log_line = {
           confirm = "diff_file_commit",
