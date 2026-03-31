@@ -448,8 +448,8 @@ map(
           end
           vim.cmd(
             ("CodeDiff file %s %s"):format(
-              vim.fn.fnameescape(current),
-              vim.fn.fnameescape(item.file or item.path or item.value or "")
+              vim.fn.fnameescape(item.file or item.path or item.value or ""),
+              vim.fn.fnameescape(current)
             )
           )
         end)
