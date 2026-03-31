@@ -149,6 +149,7 @@ return {
                   desc = "Switch to Telescope Grep",
                   mode = { "i", "n" },
                 },
+                ["<C-f>"] = { "toggle_ignored", mode = { "i", "n" } },
               },
             },
           },
