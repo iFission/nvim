@@ -136,7 +136,13 @@ return {
           all = true,
         },
         git_status = {
-          confirm = "diff_head_file",
+          win = {
+            input = {
+              keys = {
+                ["<S-CR>"] = { "diff_head_file", mode = { "n", "i" } },
+              },
+            },
+          },
         },
         smart = {
           -- show path on preview title
