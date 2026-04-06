@@ -76,6 +76,34 @@ return {
           end, 50)
         end,
 
+        -- modified from diff_branch. diff_file_commit version not working
+        diff_file_commit_with_head = function(picker, item)
+          local function current_branch()
+            local out = vim.fn.systemlist({ "git", "branch", "--show-current" })
+            return (out and out[1] ~= "" and out[1]) or "HEAD"
+          end
+
+          local branch = item and (item.branch or item.name or item.text)
+          if not branch then
+            return
+          end
+          branch = branch:gsub("^%*%s*", ""):gsub("^%s+", "")
+
+          local base = current_branch()
+          picker:close()
+          vim.defer_fn(function()
+            local cfg = require("codediff.config")
+            local prev_focus = cfg.options.explorer.initial_focus
+            cfg.options.explorer.initial_focus = "modified"
+
+            vim.cmd(("CodeDiff %s...%s"):format(branch, base))
+
+            vim.defer_fn(function()
+              cfg.options.explorer.initial_focus = prev_focus
+            end, 200)
+          end, 50)
+        end,
+
         diff_branch = function(picker, item)
           local function current_branch()
             local out = vim.fn.systemlist({ "git", "branch", "--show-current" })
@@ -123,7 +151,7 @@ return {
           win = {
             input = {
               keys = {
-                ["<S-CR>"] = { "diff_branch", mode = { "n", "i" } },
+                ["<S-CR>"] = { "diff_file_commit_with_head", mode = { "n", "i" } },
               },
             },
           },
