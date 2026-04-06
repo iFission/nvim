@@ -98,7 +98,15 @@ map("v", "<leader>gr", with_mode_cmd("Telescope git_bcommits_range"), { desc = "
 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
 map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>")
 map("n", "<leader>gm", "?https.*merge<CR>y$", { desc = "Copy merge request URL" })
-map("n", "<leader>gy", "<cmd>GitBlameCopyFileURL<CR>", { desc = "Copy file URL" })
+map({ "n", "v" }, "<leader>gy", function()
+  Snacks.gitbrowse({
+    what = "file",
+    open = function(url)
+      vim.fn.setreg("+", url)
+      vim.notify("Copied: " .. url)
+    end,
+  })
+end, { desc = "Copy file URL" })
 
 map("n", "<leader>gl", function()
   require("gitsigns").blame_line()
