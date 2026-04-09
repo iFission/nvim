@@ -9,17 +9,8 @@ return {
     },
   },
   keys = {
-    { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-    { "<leader>fc", "<cmd>Telescope commands<cr>", desc = "Commands" },
     { "<leader>fd", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Document diagnostics" },
     { "<leader>fD", "<cmd>Telescope diagnostics<cr>", desc = "Workspace diagnostics" },
-    {
-      "<leader>uC",
-      function()
-        require("telescope.builtin").colorscheme({ enable_preview = true })
-      end,
-      desc = "Colorscheme with preview",
-    },
   },
   config = function()
     local actions = require("telescope.actions")

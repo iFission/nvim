@@ -161,7 +161,7 @@ map(
   { "n", "v" },
   "<leader>3",
   with_mode(function()
-    require("telescope.builtin").commands()
+    Snacks.picker.commands()
   end),
   { desc = "Commands" }
 )
@@ -198,19 +198,33 @@ map(
 )
 map(
   "n",
-  "<leader>fsr",
+  "<leader>fw",
   with_mode(function()
-    Snacks.picker.resume()
+    Snacks.picker.grep()
   end),
-  { desc = "Snacks resume" }
+  { desc = "Find word" }
 )
 map(
-  "n",
-  "<leader>fp",
+  "v",
+  "<leader>fw",
   with_mode(function()
-    Snacks.picker()
+    function vim.getVisualSelection()
+      vim.cmd('noau normal! "vy"')
+      local text = vim.fn.getreg("v")
+      vim.fn.setreg("v", {})
+
+      text = string.gsub(text, "\n", "")
+      if #text > 0 then
+        return text
+      else
+        return ""
+      end
+    end
+
+    local text = vim.getVisualSelection()
+    Snacks.picker.grep({ search = text })
   end),
-  { desc = "Snacks picker" }
+  { desc = "Find word in selection" }
 )
 map(
   "n",
@@ -277,35 +291,63 @@ map(
   "n",
   "<leader>fF",
   with_mode(function()
-    require("telescope.builtin").git_files()
+    Snacks.picker.files()
   end),
-  { desc = "Find git files" }
+  { desc = "Find files" }
 )
 map("n", "<leader>ft", with_mode_cmd("Telescope"), { desc = "Telescope" })
-map("n", "<leader>fh", with_mode_cmd("Telescope oldfiles"), { desc = "Find history" })
-map("n", "<leader>fH", with_mode_cmd("Telescope help_tags"), { desc = "Find help" })
-map("n", "<leader>0", with_mode_cmd("Telescope buffers"), { desc = "Buffers" })
+map(
+  "n",
+  "<leader>fp",
+  with_mode(function()
+    Snacks.picker()
+  end),
+  { desc = "Snacks picker" }
+)
+map(
+  "n",
+  "<leader>fh",
+  with_mode(function()
+    Snacks.picker.recent()
+  end),
+  { desc = "Find history" }
+)
+map(
+  "n",
+  "<leader>fH",
+  with_mode(function()
+    Snacks.picker.help()
+  end),
+  { desc = "Find help" }
+)
+map(
+  "n",
+  "<leader>0",
+  with_mode(function()
+    Snacks.picker.buffers()
+  end),
+  { desc = "Buffers" }
+)
 map(
   "n",
   "<leader>fo",
   with_mode_cmd("Telescope file_browser path=%:p:h select_buffer=true"),
   { desc = "File browser", silent = true }
 )
+map("n", "<leader>fm", "<cmd> messages<cr>", { desc = "Find messages" })
 map(
   "n",
-  ")",
+  "<leader>fM",
   with_mode(function()
-    require("telescope.builtin").buffers()
+    Snacks.picker.marks()
   end),
-  { desc = "Find buffer", silent = true }
+  { desc = "Find marks" }
 )
-map("n", "<leader>fm", "<cmd> messages<cr>", { desc = "Find messages" })
-map("n", "<leader>fM", with_mode_cmd("Telescope marks"), { desc = "Find marks" })
 map(
   "n",
   "<leader>fk",
   with_mode(function()
-    require("telescope.builtin").keymaps()
+    Snacks.picker.keymaps()
   end),
   { desc = "Find keymaps" }
 )
@@ -314,13 +356,36 @@ map("n", "<leader>fn", function()
 end, { desc = "Find notifications" })
 map(
   "n",
+  "<leader>fb",
+  with_mode(function()
+    Snacks.picker.buffers()
+  end),
+  { desc = "Find buffers" }
+)
+map(
+  "n",
+  "<leader>fc",
+  with_mode(function()
+    Snacks.picker.commands()
+  end),
+  { desc = "Find commands" }
+)
+map(
+  "n",
   "<leader>fj",
   with_mode(function()
-    require("telescope.builtin").jumplist()
+    Snacks.picker.jumps()
   end),
   { desc = "Find jumplist" }
 )
-map("n", "<leader>f/", with_mode_cmd("Telescope builtin"), { desc = "Find builtin" })
+map(
+  "n",
+  "<leader>uC",
+  with_mode(function()
+    Snacks.picker.colorschemes()
+  end),
+  { desc = "Find colorschemes" }
+)
 
 -- editing/intellisense/code
 map("n", "gi", function()
