@@ -107,6 +107,7 @@ map({ "n", "v" }, "<leader>gy", function()
     end,
   })
 end, { desc = "Copy file URL" })
+map("n", "<leader>gY", "<cmd>GitBlameCopyFileURL<CR>", { desc = "Copy file URL" })
 
 map("n", "<leader>gl", function()
   require("gitsigns").blame_line()
