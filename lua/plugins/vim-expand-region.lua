@@ -4,8 +4,8 @@ return {
     event = "VeryLazy",
     dependencies = { "chrisgrieser/nvim-various-textobjs" },
     keys = {
-      { ".", mode = { "x" }, "<Plug>(expand_region_expand)", desc = "Expand selection" },
-      { ",", mode = { "x" }, "<Plug>(expand_region_shrink)", desc = "Shrink selection" },
+      { "'", mode = { "x" }, "<Plug>(expand_region_expand)", desc = "Expand selection" },
+      { '"', mode = { "x" }, "<Plug>(expand_region_shrink)", desc = "Shrink selection" },
     },
     init = function()
       vim.cmd([[
