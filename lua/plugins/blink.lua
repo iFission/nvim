@@ -59,7 +59,12 @@ return {
         default = { "lsp", "path", "snippets", "buffer" },
       },
       fuzzy = { implementation = "prefer_rust_with_warning" },
-      signature = { enabled = false },
+      signature = {
+        enabled = true,
+        window= {
+          show_documentation = true,
+        },
+      },
     },
     opts_extend = { "sources.default" },
   },
