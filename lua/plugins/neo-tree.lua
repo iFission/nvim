@@ -1,3 +1,5 @@
+local open_next_added_file = nil
+
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -120,8 +122,29 @@ return {
 
           -- from your older config
           c = {
-            "add",
-            config = { show_path = "relative" }, -- "none", "relative", "absolute"
+            function(state)
+              local node = state.tree:get_node()
+              local node_path = node.path or node:get_id()
+
+              local base_dir
+              if node.type == "directory" then
+                base_dir = node_path
+              else
+                base_dir = vim.fn.fnamemodify(node_path, ":h")
+              end
+
+              pending_create_file = {
+                base_dir = vim.fn.fnamemodify(base_dir, ":p"),
+              }
+
+              require("neo-tree.sources.filesystem.commands").add(state)
+
+              -- reset if cancelled or if no file_added event arrives
+              vim.defer_fn(function()
+                pending_create_file = nil
+              end, 10000)
+            end,
+            desc = "Create File and Open",
           },
           C = {
             "add_directory",
@@ -149,17 +172,38 @@ return {
         {
           event = "file_added",
           handler = function(file_path)
-            vim.cmd("edit " .. vim.fn.fnameescape(file_path))
+            local abs_path = vim.fn.fnamemodify(file_path, ":p")
+
+            if pending_create_file then
+              local base_dir = pending_create_file.base_dir
+
+              -- Only treat it as our c-created file if it appears under the dir
+              -- where c was triggered.
+              if vim.startswith(abs_path, base_dir) and vim.fn.isdirectory(abs_path) == 0 then
+                pending_create_file = nil
+
+                vim.defer_fn(function()
+                  require("neo-tree.command").execute({ action = "close" })
+
+                  vim.defer_fn(function()
+                    vim.cmd("edit " .. vim.fn.fnameescape(abs_path))
+                    vim.cmd("startinsert")
+                  end, 30)
+                end, 30)
+
+                return
+              end
+            end
+
+            -- Duplicate/copy case: keep Neo-tree open and highlight the new item.
             vim.defer_fn(function()
-              require("neo-tree.command").execute({ action = "close" })
-              vim.cmd("startinsert")
+              require("neo-tree.command").execute({
+                source = "filesystem",
+                action = "focus",
+                reveal_file = abs_path,
+                reveal_force_cwd = true,
+              })
             end, 100)
-          end,
-        },
-        {
-          event = "file_opened",
-          handler = function(_file_path)
-            require("neo-tree.command").execute({ action = "close" })
           end,
         },
       },
