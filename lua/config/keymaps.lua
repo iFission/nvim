@@ -388,9 +388,6 @@ map(
 )
 
 -- editing/intellisense/code
-map("n", "gi", function()
-  vim.lsp.buf.hover()
-end, { desc = "Hover symbol details" })
 map("n", "gl", function()
   vim.diagnostic.open_float()
 end, { desc = "Hover problems" })
