@@ -388,9 +388,6 @@ map(
 )
 
 -- editing/intellisense/code
-map("n", "gl", function()
-  vim.diagnostic.open_float()
-end, { desc = "Hover problems" })
 map("n", "gc", require("actions-preview").code_actions, { desc = "Code action" })
 map("n", "gC", function()
   vim.lsp.buf.code_action({
