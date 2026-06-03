@@ -584,6 +584,7 @@ map({ "n", "x", "i" }, "<c-w>h", "<Cmd>BufferLineCyclePrev<CR>", { desc = "Prev 
 map({ "n", "x", "i" }, "<c-w>l", "<Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "<c-w>j", "<Cmd>BufferLineMovePrev<CR>", { desc = "Buffer move prev" })
 map("n", "<c-w>k", "<Cmd>BufferLineMoveNext<CR>", { desc = "Buffer move next" })
+map("n", "<c-w>tc", "<Cmd>tabnew<CR>", { desc = "Tab new" })
 map("n", "<c-w>tx", "<Cmd>tabclose<CR>", { desc = "Tab close" })
 map("n", "<c-w>th", "<Cmd>tabprevious<CR>", { desc = "Tab previous" })
 map("n", "<c-w>tl", "<Cmd>tabnext<CR>", { desc = "Tab next" })
