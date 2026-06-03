@@ -251,6 +251,8 @@ return {
       win = {
         input = {
           keys = {
+            ["<C-CR>"] = { "edit_vsplit", mode = { "i", "n" } },
+            ["<S-CR>"] = { "edit_split", mode = { "i", "n" } },
             ["<esc>"] = {
               function(picker)
                 local alt_buf = vim.fn.bufnr("#")

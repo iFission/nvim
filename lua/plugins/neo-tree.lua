@@ -100,7 +100,9 @@ return {
         position = "left",
         width = 70,
         mappings = {
-          -- from your newer config
+          ["<C-CR>"] = "open_vsplit",
+          ["<S-CR>"] = "open_split",
+          ["o"] = "open",
           ["l"] = "open",
           ["h"] = "close_node",
           ["<space>"] = "none",

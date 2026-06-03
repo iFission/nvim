@@ -84,6 +84,8 @@ return {
         },
         mappings = {
           n = {
+            ["<C-CR>"] = actions.select_vertical,
+            ["<S-CR>"] = actions.select_horizontal,
             ["<esc>"] = restore_mode_close,
             ["<S-J>"] = actions.preview_scrolling_down,
             ["<S-K>"] = actions.preview_scrolling_up,
@@ -92,6 +94,8 @@ return {
             ["<C-q>"] = require("trouble.sources.telescope").open,
           },
           i = {
+            ["<C-CR>"] = actions.select_vertical,
+            ["<S-CR>"] = actions.select_horizontal,
             ["<esc>"] = restore_mode_close,
             ["<S-Down>"] = actions.cycle_history_next,
             ["<S-Up>"] = actions.cycle_history_prev,
