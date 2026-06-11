@@ -24,7 +24,6 @@ end
 -- nvim
 map({ "n", "i", "v" }, "<c-q>", "<cmd>quitall!<cr>", { desc = "Quit", remap = true })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
-map("n", "<leader>bn", "<cmd>tabnew<cr>", { desc = "New tab" })
 map("n", "<leader>sd", "<cmd>SessionDelete<cr>", { desc = "Session delete" })
 map("n", "<leader>sd", "<cmd>SessionDelete<cr>", { desc = "Session delete" })
 
@@ -549,15 +548,15 @@ map({ "n", "x" }, "!", "<Cmd>lua require('bufferline').go_to(1, true)<CR>", { de
 map("n", "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", { desc = "Pin buffer" })
 map("n", "<leader>bj", "<Cmd>BufferLineMovePrev<CR>", { desc = "Buffer move prev" })
 map("n", "<leader>bk", "<Cmd>BufferLineMoveNext<CR>", { desc = "Buffer move next" })
-map("n", "<leader>bh", "<Cmd>BufferLineCloseLeft<CR>", { desc = "Close left tabs" })
-map("n", "<leader>bl", "<Cmd>BufferLineCloseRight<CR>", { desc = "Close right tabs" })
+map("n", "<leader>bh", "<Cmd>BufferLineCloseLeft<CR>", { desc = "Close left buffers" })
+map("n", "<leader>bl", "<Cmd>BufferLineCloseRight<CR>", { desc = "Close right buffers" })
 map("n", "<leader>bc", "<cmd>enew<cr><cmd>startinsert<cr>", { desc = "Create file" })
 map("n", "<leader>br", function()
   Snacks.rename.rename_file()
 end, { desc = "Rename file" })
 map("n", "<leader>by", "<cmd>let @+=expand('%:p')<cr>", { desc = "Copy path" })
 
--- window
+-- window/tab
 map({ "n", "x", "i" }, "<c-w>1", "<Cmd>lua require('bufferline').go_to(1, true)<CR>", { desc = "Go to buffer 1" })
 map({ "n", "x", "i" }, "<c-w><up>", "<Cmd>wincmd k<CR>", { desc = "Focus up window" })
 map({ "n", "x", "i" }, "<c-w><down>", "<Cmd>wincmd j<CR>", { desc = "Focus down window" })
@@ -584,10 +583,11 @@ map({ "n", "x", "i" }, "<c-w>h", "<Cmd>BufferLineCyclePrev<CR>", { desc = "Prev 
 map({ "n", "x", "i" }, "<c-w>l", "<Cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
 map("n", "<c-w>j", "<Cmd>BufferLineMovePrev<CR>", { desc = "Buffer move prev" })
 map("n", "<c-w>k", "<Cmd>BufferLineMoveNext<CR>", { desc = "Buffer move next" })
-map("n", "<c-w>tc", "<Cmd>tabnew<CR>", { desc = "Tab new" })
-map("n", "<c-w>tx", "<Cmd>tabclose<CR>", { desc = "Tab close" })
-map("n", "<c-w>th", "<Cmd>tabprevious<CR>", { desc = "Tab previous" })
-map("n", "<c-w>tl", "<Cmd>tabnext<CR>", { desc = "Tab next" })
+map("n", "<c-w>c", "<Cmd>tabnew<CR>", { desc = "Tab new" })
+map("n", "<c-w>x", "<Cmd>tabclose<CR>", { desc = "Tab close" })
+map("n", "<c-w>X", "<Cmd>tabonly<CR>", { desc = "Tab close others" })
+map("n", "<c-w>h", "<Cmd>tabprevious<CR>", { desc = "Tab previous" })
+map("n", "<c-w>l", "<Cmd>tabnext<CR>", { desc = "Tab next" })
 map(
   { "n", "x", "i" },
   "<c-w>L",
