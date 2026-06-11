@@ -21,6 +21,43 @@ local function with_mode_cmd(cmd)
   end)
 end
 
+local function feed(keys)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "m", false)
+end
+
+local function pos()
+  return {
+    buf = vim.api.nvim_get_current_buf(),
+    win = vim.api.nvim_get_current_win(),
+    row = vim.api.nvim_win_get_cursor(0)[1],
+    col = vim.api.nvim_win_get_cursor(0)[2],
+  }
+end
+
+local function is_same_pos(a, b)
+  return a.buf == b.buf and a.win == b.win and a.row == b.row and a.col == b.col
+end
+
+local function gitsigns_then_change(direction)
+  local change_key = direction == "next" and "]c" or "[c"
+  local before = pos()
+
+  pcall(function()
+    require("gitsigns").nav_hunk(direction, {
+      wrap = false,
+      navigation_message = false,
+    })
+  end)
+
+  vim.defer_fn(function()
+    local after = pos()
+
+    if is_same_pos(before, after) then
+      feed(change_key)
+    end
+  end, 50)
+end
+
 -- nvim
 map({ "n", "i", "v" }, "<c-q>", "<cmd>quitall!<cr>", { desc = "Quit", remap = true })
 map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
@@ -35,10 +72,12 @@ map("n", "<leader>pc", "<cmd>ConformInfo<cr>", { desc = "Conform" })
 map("n", "<leader>pt", "<cmd>LintInfo<cr>", { desc = "Lint" })
 
 -- git
-map("n", "<leader>g4", "<cmd>Gitsign prev_hunk<cr>", { desc = "Prev hunk" })
-map("n", "<leader>g3", "<cmd>Gitsign next_hunk<cr>", { desc = "Next hunk" })
-map("n", "g4", "<cmd>Gitsign prev_hunk<cr>", { desc = "Prev hunk" })
-map("n", "g3", "<cmd>Gitsign next_hunk<cr>", { desc = "Next hunk" })
+map("n", "g3", function()
+  gitsigns_then_change("next")
+end, { desc = "Next hunk/change" })
+map("n", "g4", function()
+  gitsigns_then_change("prev")
+end, { desc = "Prev hunk/change" })
 map("n", "<leader>gf", "<cmd>CodeDiff file HEAD<cr>", { desc = "View diff" })
 map("n", "<leader>gd", "<cmd>Gitsign reset_hunk<cr>", { desc = "Reset hunk" })
 map("v", "<leader>gd", function()
