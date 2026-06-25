@@ -129,8 +129,29 @@ map(
   end),
   { desc = "Branches" }
 )
-map("n", "<leader>gc", with_mode_cmd("AdvancedGitSearch search_log_content"), { desc = "Commits (repo)" })
-map("n", "<leader>gC", with_mode_cmd("AdvancedGitSearch search_log_content_file"), { desc = "Commits (file)" })
+map(
+  "n",
+  "<leader>gc",
+  with_mode(function()
+    Snacks.picker.git_log()
+  end),
+  { desc = "Commits (repo)" }
+)
+map(
+  "n",
+  "<leader>gC",
+  with_mode(function()
+    Snacks.picker.git_log()
+  end),
+  { desc = "Commits (file)" }
+)
+map("n", "<leader>glc", with_mode_cmd("AdvancedGitSearch search_log_content"), { desc = "Log Content Commits (repo)" })
+map(
+  "n",
+  "<leader>glC",
+  with_mode_cmd("AdvancedGitSearch search_log_content_file"),
+  { desc = "Log Content Commits (file)" }
+)
 map("n", "<leader>gr", with_mode_cmd("Telescope git_bcommits"), { desc = "Restore commit (file)" })
 map("v", "<leader>gr", with_mode_cmd("Telescope git_bcommits_range"), { desc = "Restore commit (range)" })
 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
@@ -147,12 +168,14 @@ map({ "n", "v" }, "<leader>gy", function()
 end, { desc = "Copy file URL" })
 map("n", "<leader>gY", "<cmd>GitBlameCopyFileURL<CR>", { desc = "Copy file URL" })
 
-map("n", "<leader>gl", function()
-  require("gitsigns").blame_line()
-end, { desc = "Blame" })
-map("n", "<leader>gL", function()
-  Snacks.git.blame_line()
-end, { desc = "Blame (full)" })
+map(
+  { "n", "v" },
+  "<leader>gL",
+  with_mode(function()
+    Snacks.picker.git_log_line()
+  end),
+  { desc = "Blame" }
+)
 map("n", "<leader>gg", function()
   Snacks.terminal.toggle({ "lazygit" })
 end, { desc = "Lazygit" })
