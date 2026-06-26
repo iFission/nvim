@@ -10,7 +10,11 @@ return {
         view_mode = "tree",
       },
       keymaps = {
-        view = { toggle_stage = "a" },
+        view = {
+          toggle_explorer = "<leader>E",
+          focus_explorer = "<leader>e",
+          toggle_stage = "a",
+        },
         explorer = {
           hover = "-",
           restore = "d",
