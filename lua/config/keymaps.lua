@@ -38,14 +38,27 @@ local function is_same_pos(a, b)
   return a.buf == b.buf and a.win == b.win and a.row == b.row and a.col == b.col
 end
 
-local function gitsigns_then_change(direction)
-  local change_key = direction == "next" and "]c" or "[c"
+local function goto_codediff_or_gitsigns_or_change(direction)
+  local ok, lifecycle = pcall(require, "codediff.ui.lifecycle")
+  if ok and lifecycle.get_session(vim.api.nvim_get_current_tabpage()) then
+    local navigation = require("codediff.ui.view.navigation")
+    local moved = direction == "prev" and navigation.prev_hunk() or navigation.next_hunk()
+    if moved then
+      return
+    end
+    moved = direction == "prev" and navigation.prev_file() or navigation.next_file()
+    if moved then
+      return
+    end
+  end
+
+  local change_key = direction == "prev" and "[c" or "[c"
   local before = pos()
 
   pcall(function()
     require("gitsigns").nav_hunk(direction, {
-      wrap = false,
-      navigation_message = false,
+      wrap = true,
+      navigation_message = true,
     })
   end)
 
@@ -73,10 +86,10 @@ map("n", "<leader>pt", "<cmd>LintInfo<cr>", { desc = "Lint" })
 
 -- git
 map("n", "g3", function()
-  gitsigns_then_change("next")
+  goto_codediff_or_gitsigns_or_change("next")
 end, { desc = "Next hunk/change" })
 map("n", "g4", function()
-  gitsigns_then_change("prev")
+  goto_codediff_or_gitsigns_or_change("prev")
 end, { desc = "Prev hunk/change" })
 map("n", "<leader>gf", "<cmd>CodeDiff file HEAD<cr>", { desc = "View diff" })
 map("n", "<leader>gd", "<cmd>Gitsign reset_hunk<cr>", { desc = "Reset hunk" })
@@ -461,19 +474,28 @@ map("n", "gC", function()
   })
 end, { desc = "Source action" })
 local function goto_trouble_or_diagnostic(direction)
+  local ok, lifecycle = pcall(require, "codediff.ui.lifecycle")
+  if ok and lifecycle.get_session(vim.api.nvim_get_current_tabpage()) then
+    local navigation = require("codediff.ui.view.navigation")
+    local moved = direction == "prev" and navigation.prev_file() or navigation.next_file()
+    if moved then
+      return
+    end
+  end
+
   local ok, trouble = pcall(require, "trouble")
   if ok and require("trouble").is_open() then
-    if direction == "prev" then
-      trouble.prev({ skip_groups = true, jump = true })
-    else
-      trouble.next({ skip_groups = true, jump = true })
+    local moved = direction == "prev" and trouble.prev({ skip_groups = true, jump = true })
+      or trouble.next({ skip_groups = true, jump = true })
+    if moved then
+      return
     end
+  end
+
+  if direction == "prev" then
+    vim.diagnostic.goto_prev()
   else
-    if direction == "prev" then
-      vim.diagnostic.goto_prev()
-    else
-      vim.diagnostic.goto_next()
-    end
+    vim.diagnostic.goto_next()
   end
 end
 
