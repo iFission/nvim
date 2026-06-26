@@ -12,21 +12,41 @@ return {
 
     keys = {
       {
-        "<leader>fe",
+        "<leader>e",
+        function()
+          local current_win = vim.api.nvim_get_current_win()
+
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            local buf = vim.api.nvim_win_get_buf(win)
+
+            if vim.bo[buf].filetype == "neo-tree" then
+              if win == current_win then
+                require("neo-tree.command").execute({
+                  action = "close",
+                  source = "filesystem",
+                })
+              else
+                vim.api.nvim_set_current_win(win)
+              end
+              return
+            end
+          end
+
+          require("neo-tree.command").execute({
+            action = "focus",
+            source = "filesystem",
+            dir = project_root(),
+          })
+        end,
+        desc = "Explorer NeoTree (Focus and Toggle)",
+      },
+      {
+        "<leader>E",
         function()
           require("neo-tree.command").execute({ toggle = true, dir = project_root() })
         end,
-        desc = "Explorer NeoTree (Root Dir)",
+        desc = "Explorer NeoTree (Toggle)",
       },
-      {
-        "<leader>fE",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd)",
-      },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
       {
         "<leader>be",
         function()
