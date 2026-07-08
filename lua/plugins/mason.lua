@@ -44,7 +44,6 @@ return {
         "bash-language-server",
         "prettier",
         "clangd",
-        "clang-format",
       },
       auto_update = true,
     },
