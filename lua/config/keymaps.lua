@@ -154,9 +154,17 @@ map(
   "n",
   "<leader>gC",
   with_mode(function()
-    Snacks.picker.git_log()
+    Snacks.picker.git_log_file()
   end),
   { desc = "Commits (file)" }
+)
+map(
+  "v",
+  "<leader>gC",
+  with_mode(function()
+    Snacks.picker.git_log_line()
+  end),
+  { desc = "Commits (line)" }
 )
 map("n", "<leader>glc", with_mode_cmd("AdvancedGitSearch search_log_content"), { desc = "Log Content Commits (repo)" })
 map(
