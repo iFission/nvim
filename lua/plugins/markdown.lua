@@ -23,10 +23,18 @@ return {
     end,
   },
   {
-    "OXY2DEV/markview.nvim",
-    ft = { "markdown", "norg", "rmd", "org", "codecompanion" },
-    keys = {
-      { "<leader>um", "<cmd>Markview toggle<cr>", desc = "Toggle Markview" },
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you use the mini.nvim suite
+    opts = {
+      pipe_table = { enabled = false }, -- pipetable owns tables
+      win_options = { concealcursor = { rendered = "nvic" } }, -- keep pipetable's active row rendered
     },
+  },
+  {
+    "dominic-righthere/markdown-pipetable.nvim",
+    ft = "markdown",
+    config = function()
+      require("pipetable").setup({ column = { min_width = 3, max_width = 400, padding = 1 } })
+    end,
   },
 }
