@@ -142,6 +142,34 @@ map(
   end),
   { desc = "Branches" }
 )
+map("n", "<leader>gM", function()
+  local base
+
+  for _, remote in ipairs({ "origin", "upstream" }) do
+    local ref = vim.trim(vim.fn.system("git symbolic-ref --short refs/remotes/" .. remote .. "/HEAD 2>/dev/null"))
+    if vim.v.shell_error == 0 and ref ~= "" then
+      base = ref
+      break
+    end
+  end
+
+  if not base then
+    for _, branch in ipairs({ "main", "trunk", "mainline", "default", "stable", "master" }) do
+      for _, remote in ipairs({ "origin", "upstream" }) do
+        vim.fn.system("git show-ref --verify --quiet refs/remotes/" .. remote .. "/" .. branch)
+        if vim.v.shell_error == 0 then
+          base = remote .. "/" .. branch
+          break
+        end
+      end
+      if base then
+        break
+      end
+    end
+  end
+
+  vim.cmd("CodeDiff " .. (base or "origin/master") .. "...HEAD")
+end, { desc = "MR Diff" })
 map(
   "n",
   "<leader>gc",
