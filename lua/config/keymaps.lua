@@ -121,18 +121,23 @@ map(
   end),
   { desc = "Git status" }
 )
-map("n", "<leader>gS", function()
-  local gs = require("gitsigns")
-  local cfg = require("gitsigns.config").config
-  local enable = not cfg.word_diff -- if word_diff is off -> turn the bundle on
+Snacks.toggle({
+  name = "Gitsigns View",
+  get = function()
+    return require("gitsigns.config").config.word_diff
+  end,
+  set = function(enabled)
+    local gs = require("gitsigns")
 
-  gs.toggle_deleted(enable)
-  gs.toggle_linehl(enable)
-  gs.toggle_numhl(enable)
-  gs.toggle_word_diff(enable)
-
-  vim.notify("Gitsigns view " .. (enable and "ON" or "OFF"))
-end, { desc = "Toggle gitsigns view (deleted/linehl/numhl/word_diff)" })
+    gs.toggle_deleted(enabled)
+    gs.toggle_linehl(enabled)
+    gs.toggle_numhl(enabled)
+    gs.toggle_word_diff(enabled)
+  end,
+  map = function(m, lhs, rhs, opts)
+    map(m, lhs, with_mode(rhs), opts)
+  end,
+}):map("<leader>gS")
 
 map(
   "n",
