@@ -497,6 +497,53 @@ map(
   { desc = "Find colorschemes" }
 )
 
+local markdown_enabled = true
+local rm = require("render-markdown")
+local pt = require("pipetable.manager")
+local render = require("pipetable.render")
+local state = require("pipetable.state")
+local mode = require("pipetable.mode")
+
+for _, name in ipairs({ "refresh", "on_cursor", "toggle" }) do
+  local original = pt[name]
+  pt[name] = function(...)
+    if markdown_enabled then
+      return original(...)
+    end
+  end
+end
+
+Snacks.toggle({
+  name = "Markdown Rendering",
+  get = function()
+    return markdown_enabled
+  end,
+  set = function(enabled)
+    markdown_enabled = enabled
+
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(buf) and state.peek(buf) then
+        if enabled then
+          pt.refresh(buf)
+        else
+          mode.exit(buf)
+          render.clear(buf)
+          pt.restore_wo(buf)
+        end
+      end
+    end
+
+    if enabled then
+      rm.enable()
+    else
+      rm.disable()
+    end
+  end,
+  map = function(m, lhs, rhs, opts)
+    map(m, lhs, with_mode(rhs), opts)
+  end,
+}):map("<leader>um")
+
 -- editing/intellisense/code
 map("n", "gc", require("actions-preview").code_actions, { desc = "Code action" })
 map("n", "gC", function()
