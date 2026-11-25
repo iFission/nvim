@@ -483,6 +483,8 @@ map(
 )
 
 local markdown_enabled = true
+local markdown_syntax = {}
+
 local rm = require("render-markdown")
 local pt = require("pipetable.manager")
 local render = require("pipetable.render")
@@ -507,13 +509,28 @@ Snacks.toggle({
     markdown_enabled = enabled
 
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_loaded(buf) and state.peek(buf) then
-        if enabled then
-          pt.refresh(buf)
-        else
-          mode.exit(buf)
-          render.clear(buf)
-          pt.restore_wo(buf)
+      if vim.api.nvim_buf_is_loaded(buf) then
+        -- Toggle Markdown syntax highlighting
+        if vim.bo[buf].filetype == "markdown" then
+          if enabled then
+            vim.bo[buf].syntax = markdown_syntax[buf] or ""
+            vim.treesitter.start(buf)
+          else
+            markdown_syntax[buf] = vim.bo[buf].syntax
+            vim.treesitter.stop(buf)
+            vim.bo[buf].syntax = "OFF"
+          end
+        end
+
+        -- Toggle Pipetable
+        if state.peek(buf) then
+          if enabled then
+            pt.refresh(buf)
+          else
+            mode.exit(buf)
+            render.clear(buf)
+            pt.restore_wo(buf)
+          end
         end
       end
     end
